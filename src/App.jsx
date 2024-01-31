@@ -1,17 +1,26 @@
 import "./App.css";
+import React, { useContext } from "react";
+import AuthContext from "./authContext.jsx";
 import { RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import router from "./router";
+import { router, authRouter } from "./router";
 
 function App() {
-  const atLoginPage = location.pathname.includes("login");
-
+  const auth = useContext(AuthContext);
   return (
-    <div className="my-main-container">
-      <RouterProvider router={router} />
+    <>
+      {auth.login ? (
+        <>
+          <RouterProvider router={router} />
+        </>
+      ) : (
+        <>
+          <RouterProvider router={authRouter} />
+        </>
+      )}
       <ToastContainer />
-    </div>
+    </>
   );
 }
 

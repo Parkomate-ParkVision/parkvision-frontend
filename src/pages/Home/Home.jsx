@@ -12,11 +12,9 @@ const Home = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    if (userType === "admin") {
-      navigate("/admin");
-    } else if (userType === "superadmin") {
-      navigate("/superadmin");
-    }
+    localStorage.setItem("userType", userType);
+    localStorage.setItem("accessToken", "1234567890");
+    window.location.href = "";
   };
 
   const scrollToTop = () => {
@@ -29,17 +27,18 @@ const Home = () => {
 
   return (
     <div>
-      <div className="relative w-[100%] bg-[#f4f2ed] flex flex-row h-full justify-between items-center max-md:flex-col max-md:flex-col overflow-hidden">
+      <div className="relative w-[100%] bg-[#f4f2ed] flex flex-row h-full justify-between items-center max-md:flex-col max-md:flex-col max-md:justify-start max-md:h-[50%] overflow-hidden font-inter">
         <img
           src={homeCarImage}
           alt="Car Image"
-          className="fixed object-cover top-0 left-0 w-[20%] h-[100vh] max-md:rotate-90 max-md:w-full max-md:h-full border border-black max-md:justify-start max-md:relative max-md:overflow-hidden transition duration-300 ease-in-out"
+          h
+          className="fixed object-cover top-0 left-0 w-[20%] h-[100vh] max-md:-rotate-90 max-md:w-full max-md:h-[50%] max-md:top-0 max-md:justify-start max-md:relative max-md:overflow-hidden transition duration-300 ease-in-out"
         />
         <div
           id=""
           className="w-[80%] flex flex-col justify-center items-center text-center h-full text-center gap-y-4 ml-[20%] max-md:w-full max-md:ml-[0%] overflow-hidden"
         >
-          <div className="flex flex-col justify-center items-center h-screen w-full text-center gap-y-4">
+          <div className="flex flex-col justify-center items-center h-screen w-full text-center gap-y-16">
             <h1 className="text-6xl font-bold w-full italic w-full">
               Welcome to{" "}
               <div className="flex flex-row justify-center items-center">
@@ -53,7 +52,7 @@ const Home = () => {
                   setFirstPage(false);
                 }}
               >
-                <button className="w-[50%] h-[3rem] bg-[#8DBF41] text-white px-4 py-2 rounded-lg border border-gray mt-4 hover:bg-black hover:text-[#8DBF41] transition duration-300 ease-in-out">
+                <button className="w-[30%] h-[4rem] bg-black text-[#8DBF41] text-2xl font-bold px-4 py-2 rounded-lg border border-gray mt-4 hover:bg-[#8DBF41] hover:text-black transition duration-300 ease-in-out">
                   Get Started
                 </button>
               </a>
@@ -109,10 +108,13 @@ const Home = () => {
             id="login"
             className="h-screen w-[40%] flex flex-col justify-center items-center gap-y-8"
           >
-            <div className="font-bold w-full text-2xl">
-              Sign In as {userType}
+            <div className="flex flex-row justify-center items-center gap-x-2 font-bold w-full text-2xl">
+              Sign In as{" "}
+              <div className="text-[#8DBF41]">
+                {userType == "admin" ? "Admin" : "Super Admin"}
+              </div>
             </div>
-            <div className="flex flex-col w-full gap-y-4">
+            <div className="flex flex-col justify-center items-center w-full gap-y-4">
               <form action="" className="flex flex-col w-[90%] gap-y-4">
                 <input
                   type="text"
@@ -124,16 +126,17 @@ const Home = () => {
                   placeholder="Password"
                   className="w-full h-[3rem] px-4 py-2 border border-gray rounded-lg"
                 />
-                <a
-                  href="#dashboard"
-                  onClick={() => {
-                    setFirstPage(false);
-                  }}
-                >
-                  <button className="w-[50%] h-[3rem] bg-[#8DBF41] text-white px-4 py-2 rounded-lg border border-gray mt-4 hover:bg-black hover:text-[#8DBF41] transition duration-300 ease-in-out">
+                <div className="flex flex-row justify-center items-center w-full">
+                  <button
+                    className="w-[50%] h-[3rem] bg-black text-[#8DBF41] font-bold px-4 py-2 rounded-lg border border-gray mt-4 hover:bg-[#8DBF41] hover:text-black transition duration-300 ease-in-out"
+                    onClick={() => {
+                      setFirstPage(false);
+                      handleLogin();
+                    }}
+                  >
                     Sign In
                   </button>
-                </a>
+                </div>
               </form>
             </div>
           </div>
