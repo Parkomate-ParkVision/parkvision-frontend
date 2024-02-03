@@ -14,10 +14,10 @@ const NavBar = () => {
           </a>
           <div className="flex flex-row justify-center items-center font-bold gap-x-8">
             <a
-              href="/home"
-              className="flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out"
+              href="/"
+              className="flex flex-row justify-center items-center font-thin cursor-pointer text-gray hover:text-[#8DBF41] transition duration-300 ease-in-out"
             >
-              Home
+              Dashboard
             </a>
             <a
               href="/organizations"

@@ -4,6 +4,7 @@ import Login from "./pages/Login/Login";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import NavBar from "./components/Navbar/Navbar";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import ParkingPage from "./pages/Parking/ParkingPage";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const authRouter = createBrowserRouter([
       {
         path: "/",
         element: <Dashboard />,
+      },
+      {
+        path: "parkings",
+        element: <ParkingPage />,
       },
     ],
   },
