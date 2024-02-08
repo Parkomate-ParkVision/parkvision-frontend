@@ -1,7 +1,45 @@
+import { useState, useEffect } from "react";
 import logout from "../../assets/logout.svg";
 import { Outlet, useNavigate } from "react-router-dom";
+import logo from "../../assets/logo.png"
+
+const ScrollToTopButton = ({ show }) => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <button
+  className={`fixed bottom-4 left-4 rounded-full ${show ? 'visible' : 'invisible'}`}
+  onClick={scrollToTop}
+  style={{ border: '1px solid #FFA500' }}
+>
+  <img
+    src={logo}
+    width={50}
+    height={50}
+    alt="Logo"
+    className="rounded-full"
+  />
+</button>
+
+  );
+};
 
 const NavBar = () => {
+  const [showScrollButton, setShowScrollButton] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollButton(window.scrollY > 10); 
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
   return (
     <div className="flex flex-col w-full h-full">
       <div className="flex flex-row justify-between items-center w-full h-16 bg-white border border-gray font-inter bg-[#f4f2ed]">
@@ -70,6 +108,7 @@ const NavBar = () => {
       <div className="flex flex-row justify-center items-center w-full h-full">
         <Outlet />
       </div>
+      <ScrollToTopButton show={showScrollButton} /> 
     </div>
   );
 };
