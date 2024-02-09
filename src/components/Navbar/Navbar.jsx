@@ -1,60 +1,79 @@
 import logout from "../../assets/logout.svg";
-import { Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   return (
     <div className="flex flex-col w-full h-full">
       <div className="flex flex-row justify-between items-center w-full h-16 bg-white border border-gray font-inter bg-[#f4f2ed]">
         <div className="flex flex-row justify-center items-center gap-x-64 ml-4 max-md:ml-2">
-          <a
-            href="/"
+          <NavLink
+            to="/"
             className="flex flex-row justify-center items-center text-3xl font-bold cursor-pointer"
           >
             Park<div className="text-[#8DBF41]">Vision</div>
-          </a>
+          </NavLink>
           <div className="flex flex-row justify-center items-center font-bold gap-x-8">
-            <a
-              href="/"
-              className="flex flex-row justify-center items-center font-thin cursor-pointer text-gray hover:text-[#8DBF41] transition duration-300 ease-in-out"
+            <NavLink
+              to="/"
+              className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
+                window.location.pathname == "/" ? "text-[#8DBF41]" : ""
+              }`}
             >
               Dashboard
-            </a>
-            <a
-              href="/organizations"
-              className="flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out"
+            </NavLink>
+            <NavLink
+              to="/organizations"
+              className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
+                window.location.pathname == "/organizations"
+                  ? "text-[#8DBF41]"
+                  : ""
+              }`}
             >
               Organizations
-            </a>
-            <a
-              href="/cctv"
-              className="flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out"
+            </NavLink>
+            <NavLink
+              to="/cctv"
+              className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
+                window.location.pathname == "/cctv" ? "text-[#8DBF41]" : ""
+              }`}
             >
               CCTVs
-            </a>
-            <a
-              href="/parkings"
-              className="flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out"
+            </NavLink>
+            <NavLink
+              to="/parkings"
+              className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
+                window.location.pathname == "/parkings" ? "text-[#8DBF41]" : ""
+              }`}
             >
+              {console.log(window.location.pathname == "/parkings")}
               Parking Lots
-            </a>
-            <a
-              href="/feed"
-              className="flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out"
+            </NavLink>
+            <NavLink
+              to="/feed"
+              className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
+                window.location.pathname == "/feed" ? "text-[#8DBF41]" : ""
+              }`}
             >
               Real Time Feed
-            </a>
-            <a
-              href="/billing"
-              className="flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out"
+            </NavLink>
+            <NavLink
+              to="/billing"
+              className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
+                window.location.pathname == "/billing" ? "text-[#8DBF41]" : ""
+              }`}
             >
               Billing
-            </a>
-            <a
-              href="/customer-segmentation"
-              className="flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out"
+            </NavLink>
+            <NavLink
+              to="/customer-segmentation"
+              className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
+                window.location.pathname == "/customer-segmentation"
+                  ? "text-[#8DBF41]"
+                  : ""
+              }`}
             >
               Customer Segmentation
-            </a>
+            </NavLink>
           </div>
         </div>
         <div
