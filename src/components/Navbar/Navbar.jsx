@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import logout from "../../assets/logout.svg";
 import { Outlet, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import { NavLink } from "react-router-dom";
+import { NavLink,useLocation } from "react-router-dom";
 
 const ScrollToTopButton = ({ show }) => {
   const scrollToTop = () => {
@@ -30,6 +30,7 @@ const ScrollToTopButton = ({ show }) => {
 
 const NavBar = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,7 +57,7 @@ const NavBar = () => {
             <NavLink
               to="/"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                window.location.pathname == "/" ? "text-[#8DBF41]" : ""
+                location.pathname == "/" ? "text-[#8DBF41] bg-gray-200 p-2 rounded" : ""
               }`}
             >
               Dashboard
@@ -64,8 +65,8 @@ const NavBar = () => {
             <NavLink
               to="/organizations"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                window.location.pathname == "/organizations"
-                  ? "text-[#8DBF41]"
+                location.pathname == "/organizations"
+                  ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
                   : ""
               }`}
             >
@@ -74,7 +75,7 @@ const NavBar = () => {
             <NavLink
               to="/cctv"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                window.location.pathname == "/cctv" ? "text-[#8DBF41]" : ""
+                location.pathname == "/cctv" ? "text-[#8DBF41] bg-gray-200 p-2 rounded" : ""
               }`}
             >
               CCTVs
@@ -82,16 +83,16 @@ const NavBar = () => {
             <NavLink
               to="/parkings"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                window.location.pathname == "/parkings" ? "text-[#8DBF41]" : ""
+                location.pathname == "/parkings" ? "text-[#8DBF41] bg-gray-200 p-2 rounded" : ""
               }`}
             >
-              {console.log(window.location.pathname == "/parkings")}
+              {console.log(location.pathname == "/parkings")}
               Parking Lots
             </NavLink>
             <NavLink
               to="/feed"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                window.location.pathname == "/feed" ? "text-[#8DBF41]" : ""
+                location.pathname == "/feed" ? "text-[#8DBF41] bg-gray-200 p-2 rounded" : ""
               }`}
             >
               Real Time Feed
@@ -99,7 +100,7 @@ const NavBar = () => {
             <NavLink
               to="/billing"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                window.location.pathname == "/billing" ? "text-[#8DBF41]" : ""
+                location.pathname == "/billing" ? "text-[#8DBF41] bg-gray-200 p-2 rounded" : ""
               }`}
             >
               Billing
@@ -107,8 +108,8 @@ const NavBar = () => {
             <NavLink
               to="/customer-segmentation"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                window.location.pathname == "/customer-segmentation"
-                  ? "text-[#8DBF41]"
+                location.pathname == "/customer-segmentation"
+                  ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
                   : ""
               }`}
             >
