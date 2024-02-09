@@ -21,18 +21,18 @@ import ParkingTimes from "../../components/Overview/overview-parking-times";
 import OverviewPeakHours from "../../components/Overview/overview-peak-hours";
 import { OverviewOverstayed } from "../../components/Overview/overview-overstayed";
 import { OverviewWaitingTime } from "../../components/Overview/overview.waiting-time";
-// import { useRef } from 'react';
+import FrequencyHero from "../../components/FrequencyHero/FrequencyHero";
+import { useState } from "react";
 
 const now = new Date();
-// const containerRef = useRef(null);
+const [state, setState] = useState("Daily");
+
+const handleStateChange = ({ newState }) => {
+  setState(newState);
+};
 
 const Dashboard = () => (
   <>
-    {/* <head>
-      <title>
-        ParkVision
-      </title>
-    </head> */}
     <Box
       component="main"
       sx={{
@@ -41,7 +41,21 @@ const Dashboard = () => (
       }}
     >
       <Container maxWidth="xl">
-        {/* Centered Heading */}
+        <FrequencyHero
+          options={[
+            {
+              Daily: "Daily",
+            },
+            {
+              Weekly: "Weekly",
+            },
+            {
+              Monthly: "Monthly",
+            },
+          ]}
+          selectedOption={state}
+          handleChange={handleStateChange}
+        />
         <Box
           sx={{
             display: "flex",

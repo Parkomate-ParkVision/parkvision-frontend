@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import logout from "../../assets/logout.svg";
 import { Outlet, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import { NavLink } from "react-router-dom";
 
 const ScrollToTopButton = ({ show }) => {
   const scrollToTop = () => {
