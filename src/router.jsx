@@ -5,6 +5,7 @@ import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import NavBar from "./components/Navbar/Navbar";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ParkingPage from "./pages/Parking/ParkingPage";
+import Feed from "./pages/Feed/Feed";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ export const authRouter = createBrowserRouter([
       {
         path: "parkings",
         element: <ParkingPage />,
+      },
+      {
+        path: "feed",
+        element: <Feed />,
       },
     ],
   },

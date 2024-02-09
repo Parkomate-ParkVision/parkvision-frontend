@@ -12,7 +12,7 @@ import {
 
 export default function ParkingTimes({ seriesData }) {
   return (
-    <Card sx={{ maxWidth: 700 }}>
+    <Card sx={{ }}>
     <CardHeader
 
       title="Average Parking Times"
