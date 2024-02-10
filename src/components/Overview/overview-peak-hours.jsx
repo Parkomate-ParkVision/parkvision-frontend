@@ -6,10 +6,12 @@ import {
   CardHeader,
 } from '@mui/material';
 
-export default function OverviewPeakHours({seriesData}) {
+export default function OverviewPeakHours(props) {
+  const { seriesData = [], sx } = props;
+  
   return (
-    <Card sx={{ maxWidth: 700, marginRight: 2 }}>
-      <CardHeader title="Peak Hours" />
+    <Card sx={sx}>
+      <CardHeader  title="Peak Hours" />
       <CardContent>
         <LineChart
           xAxis={[

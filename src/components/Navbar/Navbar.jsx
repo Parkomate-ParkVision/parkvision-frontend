@@ -3,6 +3,7 @@ import logout from "../../assets/logout.svg";
 import { Outlet, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import { NavLink,useLocation } from "react-router-dom";
+import { FaArrowUp } from "react-icons/fa";
 
 const ScrollToTopButton = ({ show }) => {
   const scrollToTop = () => {
@@ -15,15 +16,9 @@ const ScrollToTopButton = ({ show }) => {
         show ? "visible" : "invisible"
       }`}
       onClick={scrollToTop}
-      style={{ border: "1px solid #FFA500" }}
+      style={{  }}
     >
-      <img
-        src={logo}
-        width={50}
-        height={50}
-        alt="Logo"
-        className="rounded-full"
-      />
+      <img width="64" height="64" src="/src/assets/icons8-collapse-arrow-64(1).png" alt="collapse-arrow--v1"/>    
     </button>
   );
 };

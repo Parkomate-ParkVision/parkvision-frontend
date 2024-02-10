@@ -45,7 +45,7 @@ export const OverviewOverstayed = (props) => {
                 <ListItem
                 //   divider={hasDivider}
                   key={product.id}
-                  style={{ flex: '0 0 100%', maxWidth: '100%' }}
+                  style={{ flex: '0 0 100%' }}
                 >
                   <ListItemAvatar>
                     {/* {product.wheels === 4 ? <FaCarAlt /> : <RiMotorbikeFill />} */}

@@ -10,10 +10,12 @@ import {
     SvgIcon
 } from '@mui/material';
 
-export default function OverviewVehicleClassification({ data }) {
+export default function OverviewVehicleClassification(props) {
+    const { data = [], sx } = props;
     return (
-        <Card sx={{  marginRight: 2 }}>
+        <Card sx={sx}>
             <CardHeader
+                
                 title="Vehicle Classification"
             />
             <CardContent>

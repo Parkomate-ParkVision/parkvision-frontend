@@ -26,7 +26,7 @@ const Feed = () => {
         {camfeed.map((cam) => (
           <TabPanel key={cam.id} value={cam.id.toString()}>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <video loop autoPlay src={cam.src}></video>
+                <video style={{maxHeight:'80vh'}}loop autoPlay src={cam.src}></video>
             </div>
           </TabPanel>
         ))}

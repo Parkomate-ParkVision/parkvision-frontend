@@ -3,7 +3,7 @@ import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
 import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
-// import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 export const OverviewExits = (props) => {
   const { difference, positive = false, sx, value } = props;
@@ -36,7 +36,7 @@ export const OverviewExits = (props) => {
             }}
           >
             <SvgIcon>
-              {/* <LogoutIcon /> */}
+              <LogoutIcon />
             </SvgIcon>
           </Avatar>
         </Stack>

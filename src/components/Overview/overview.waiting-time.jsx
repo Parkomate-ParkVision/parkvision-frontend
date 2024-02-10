@@ -9,8 +9,8 @@ export const OverviewWaitingTime = (props) => {
   const { difference, positive = true, value, sx } = props;
 
   return (
-    <Card style={{marginTop:25}} sx={sx}>
-        <div style={{display:'flex', justifyContent:'space-between'}}>
+    <Card sx={sx}>
+        <div style={{display:'flex',  justifyContent:'space-between'}}>
             <CardHeader title="Estimated Waiting Time"/>
             <Avatar
                 sx={{

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-// import ListBulletIcon from '@heroicons/react/24/solid/ListBulletIcon';
+import ListBulletIcon from '@heroicons/react/24/solid/ListBulletIcon';
 import {
   Avatar,
   Box,
@@ -10,7 +10,7 @@ import {
   SvgIcon,
   Typography
 } from '@mui/material';
-// import EmojiTransportationIcon from '@mui/icons-material/EmojiTransportation';
+import EmojiTransportationIcon from '@mui/icons-material/EmojiTransportation';
 
 export const OverviewOccupancy = (props) => {
   const { value, sx } = props;
@@ -44,7 +44,7 @@ export const OverviewOccupancy = (props) => {
             }}
           >
             <SvgIcon>
-              {/* <EmojiTransportationIcon /> */}
+              <EmojiTransportationIcon />
             </SvgIcon>
           </Avatar>
         </Stack>

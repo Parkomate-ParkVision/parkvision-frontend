@@ -10,9 +10,10 @@ import {
     SvgIcon
   } from '@mui/material';
 
-export default function ParkingTimes({ seriesData }) {
+export default function ParkingTimes(props) {
+  const { seriesData = [], sx } = props;
   return (
-    <Card sx={{ }}>
+    <Card sx={sx}>
     <CardHeader
 
       title="Average Parking Times"

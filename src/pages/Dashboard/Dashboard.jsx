@@ -117,7 +117,7 @@ const Dashboard = () => {
                     difference={11}
                     positive
                     sx={{ height: "100%", borderRadius: "15px" }}
-                    value="3.34 hrs"
+                    value="4 hrs 20 minutes"
                   />
                 </div>
               </Slide>
@@ -184,7 +184,7 @@ const Dashboard = () => {
                     updatedAt: subHours(now, 8).getTime(),
                   },
                 ]}
-                sx={{ height: "100%", borderRadius: "15px" }}
+                sx={{ height: "100%", borderRadius: "15px", padding:'1rem' }}
               />
             </Grid>
             <Grid xs={12} md={9} lg={6}>
@@ -257,7 +257,7 @@ const Dashboard = () => {
             </Grid>
             <Grid xs={12} md={9} lg={7}>
               <OverviewVehicleClassification
-                sx={ { marginRight: 2, borderRadius:'15px'} }
+                sx={ {  borderRadius:'15px',paddingLeft:'1rem',} }
                 data={[
                   { value: 50, label: "Economy Vehicles" },
                   { value: 23, label: "Mid-range vehicles" },
@@ -268,7 +268,7 @@ const Dashboard = () => {
               />
             </Grid>
             <Grid xs={12} md={9} lg={5}>
-              <ParkingTimes seriesData={[{ data: [2, 3, 5] }]} sx={{borderRadius:'15px'}} />
+              <ParkingTimes seriesData={[{ data: [2, 3, 5] }]} sx={{paddingLeft:'1rem',borderRadius:'15px'}} />
             </Grid>
             <Grid xs={12} md={9} lg={5.5}>
               <OverviewPeakHours
@@ -279,6 +279,7 @@ const Dashboard = () => {
                     ],
                   },
                 ]}
+                sx={{paddingLeft:'1rem', maxWidth: 700, marginRight: 2, borderRadius:'15px' }}
               />
             </Grid>
             <Grid xs={12} md={9} lg={6}>
@@ -303,13 +304,13 @@ const Dashboard = () => {
                     updatedAt: subHours(now, 75).getTime(),
                   },
                 ]}
-                sx={{ height: "auto" }}
+                sx={{ paddingLeft:'1rem',height: "auto", borderRadius:'15px' }}
               />
 
               <OverviewWaitingTime
                 difference={7}
                 positive
-                sx={{ height: "auto" }}
+                sx={{paddingLeft:'1rem', height: "auto", marginTop:'0.8rem', borderRadius:'15px' , paddingRight:'1rem'}}
                 value="34 Minutes"
               />
             </Grid>
