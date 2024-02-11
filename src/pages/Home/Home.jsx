@@ -138,15 +138,16 @@ const Home = () => {
                 className="flex flex-col w-[90%] gap-y-4"
               >
                 <input
+          
                   type="text"
-                  placeholder="Email"
+                  placeholder="parbap0@gmail.com"
                   className="w-full h-[3rem] px-4 py-2 border border-gray rounded-lg"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
                 <input
                   type="password"
-                  placeholder="Password"
+                  placeholder="***********"
                   className="w-full h-[3rem] px-4 py-2 border border-gray rounded-lg"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

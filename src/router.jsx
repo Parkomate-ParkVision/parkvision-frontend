@@ -6,6 +6,7 @@ import NavBar from "./components/Navbar/Navbar";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ParkingPage from "./pages/Parking/ParkingPage";
 import Feed from "./pages/Feed/Feed";
+import Retrainer from "./pages/Retrainer/Retrainer";
 
 export const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ export const authRouter = createBrowserRouter([
       {
         path: "feed",
         element: <Feed />,
+      },
+      {
+        path: "retrainer",
+        element: <Retrainer />,
       },
     ],
   },

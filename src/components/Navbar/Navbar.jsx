@@ -58,14 +58,14 @@ const NavBar = () => {
               Dashboard
             </NavLink>
             <NavLink
-              to="/organizations"
+              to="/retrainer"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                location.pathname == "/organizations"
+                location.pathname == "/retrainer"
                   ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
                   : ""
               }`}
             >
-              Organizations
+              Retrainer
             </NavLink>
             <NavLink
               to="/cctv"
