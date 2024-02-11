@@ -4,6 +4,7 @@ export const parkings = [
     parking_lot: "A",
     parking_space: "A1",
     vehicle_type: "Car",
+    predicted_license_plate:"MH12GK3456",
     status: "Occupied",
   },
   {
@@ -11,6 +12,7 @@ export const parkings = [
     parking_lot: "A",
     parking_space: "A2",
     vehicle_type: "Car",
+    predicted_license_plate:"MH12GK3456",
     status: "Occupied",
   },
   {
@@ -18,6 +20,7 @@ export const parkings = [
     parking_lot: "A",
     parking_space: "A3",
     vehicle_type: "Car",
+    predicted_license_plate:"MH12GK3456",
     status: "Occupied",
   },
   {
@@ -25,6 +28,7 @@ export const parkings = [
     parking_lot: "A",
     parking_space: "A4",
     vehicle_type: "Car",
+    predicted_license_plate:"MH12GK3456",
     status: "Occupied",
   },
   {
@@ -32,6 +36,7 @@ export const parkings = [
     parking_lot: "A",
     parking_space: "A5",
     vehicle_type: "Car",
+    predicted_license_plate:"MH12GK3456",
     status: "Occupied",
   },
   {
@@ -39,6 +44,7 @@ export const parkings = [
     parking_lot: "A",
     parking_space: "A6",
     vehicle_type: "Car",
+    predicted_license_plate:"MH12GK3456",
     status: "Occupied",
   },
   {
@@ -46,6 +52,7 @@ export const parkings = [
     parking_lot: "A",
     parking_space: "A7",
     vehicle_type: "Car",
+    predicted_license_plate:"MH12GK3456",
     status: "Occupied",
   },
   {
@@ -53,6 +60,7 @@ export const parkings = [
     parking_lot: "A",
     parking_space: "A8",
     vehicle_type: "Car",
+    predicted_license_plate:"MH12GK3456",
     status: "Occupied",
   },
   {
@@ -60,6 +68,7 @@ export const parkings = [
     parking_lot: "A",
     parking_space: "A9",
     vehicle_type: "Car",
+    predicted_license_plate:"MH12GK3456",
     status: "Occupied",
   },
   {
@@ -67,7 +76,8 @@ export const parkings = [
     parking_lot: "A",
     parking_space: "A10",
     vehicle_type: "Car",
+    predicted_license_plate:"MH12GK3456",
     status: "Occupied",
-    action: <div>"View"</div>,
+    
   },
 ];

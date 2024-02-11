@@ -117,13 +117,14 @@ const Home = () => {
             <div className="flex flex-col justify-center items-center w-full gap-y-4">
               <form action="" className="flex flex-col w-[90%] gap-y-4">
                 <input
+          
                   type="text"
-                  placeholder="Email"
+                  placeholder="parbap0@gmail.com"
                   className="w-full h-[3rem] px-4 py-2 border border-gray rounded-lg"
                 />
                 <input
                   type="password"
-                  placeholder="Password"
+                  placeholder="***********"
                   className="w-full h-[3rem] px-4 py-2 border border-gray rounded-lg"
                 />
                 <div className="flex flex-row justify-center items-center w-full">
