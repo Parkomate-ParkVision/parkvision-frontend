@@ -5,16 +5,34 @@ import { useNavigate } from "react-router-dom";
 import homeCarImage from "../../assets/homeCarImage.svg";
 import UpArrowIcon from "../../assets/UpArrowIcon.svg";
 import styles from "./Home.module.css";
+import Fetch from "../../utils/Fetch";
+import { ApiConfig } from "../../utils/config";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const [firstPage, setFirstPage] = useState(true);
   const [userType, setUserType] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    localStorage.setItem("userType", userType);
-    localStorage.setItem("accessToken", "1234567890");
-    window.location.href = "";
+  const handleLogin = async ({ e }) => {
+    console.log(email, password, userType);
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("password", password);
+    var response = await Fetch.post(ApiConfig.login, formData);
+    // console.log(await response.json());
+    if (response.status === 200) {
+      response = await response.json();
+      localStorage.setItem("accessToken", response.tokens.access);
+      localStorage.setItem("refreshToken", response.tokens.refresh);
+      localStorage.setItem("userType", userType);
+      window.location.href = "";
+      toast.success("Logged In Successfully");
+    } else {
+      toast.error("Invalid Credentials");
+    }
   };
 
   const scrollToTop = () => {
@@ -115,27 +133,34 @@ const Home = () => {
               </div>
             </div>
             <div className="flex flex-col justify-center items-center w-full gap-y-4">
-              <form action="" className="flex flex-col w-[90%] gap-y-4">
+              <form
+                action={handleLogin}
+                className="flex flex-col w-[90%] gap-y-4"
+              >
                 <input
                   type="text"
                   placeholder="Email"
                   className="w-full h-[3rem] px-4 py-2 border border-gray rounded-lg"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
                 <input
                   type="password"
                   placeholder="Password"
                   className="w-full h-[3rem] px-4 py-2 border border-gray rounded-lg"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
                 <div className="flex flex-row justify-center items-center w-full">
-                  <button
+                  <input
+                    type="submit"
                     className="w-[50%] h-[3rem] bg-black text-[#8DBF41] font-bold px-4 py-2 rounded-lg border border-gray mt-4 hover:bg-[#8DBF41] hover:text-black transition duration-300 ease-in-out"
-                    onClick={() => {
+                    onClick={(e) => {
                       setFirstPage(false);
-                      handleLogin();
+                      handleLogin(e);
                     }}
-                  >
-                    Sign In
-                  </button>
+                    value={"Sign In"}
+                  />
                 </div>
               </form>
             </div>
