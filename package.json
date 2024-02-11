@@ -19,6 +19,7 @@
     "@mui/styled-engine": "^5.15.7",
     "@mui/x-charts": "^6.19.3",
     "@mui/x-data-grid": "^6.19.3",
+    "axios": "^1.6.7",
     "date-fns": "^3.3.1",
     "font-awesome": "^4.7.0",
     "heroicons": "^2.1.1",

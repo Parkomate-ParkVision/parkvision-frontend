@@ -7,6 +7,8 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import ParkingPage from "./pages/Parking/ParkingPage";
 import Feed from "./pages/Feed/Feed";
 import Retrainer from "./pages/Retrainer/Retrainer";
+import OrganizationPage from "./pages/Organization/OrganizationPage";
+import IndividualOrganizationPage from "./pages/Organization/IndividualOrganizationPage";
 
 export const router = createBrowserRouter([
   {
@@ -43,6 +45,14 @@ export const authRouter = createBrowserRouter([
       {
         path: "retrainer",
         element: <Retrainer />,
+      },
+      {
+        path: "organizations",
+        element: <OrganizationPage />,
+      },
+      {
+        path: "organizations/:id",
+        element: <IndividualOrganizationPage />,
       },
     ],
   },
