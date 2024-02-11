@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import logout from "../../assets/logout.svg";
 import { Outlet, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
-import { NavLink,useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { FaArrowUp } from "react-icons/fa";
+import Fetch from "../../utils/Fetch";
+import { ApiConfig } from "../../utils/config";
+import { toast } from "react-toastify";
 
 const ScrollToTopButton = ({ show }) => {
   const scrollToTop = () => {
@@ -16,9 +19,14 @@ const ScrollToTopButton = ({ show }) => {
         show ? "visible" : "invisible"
       }`}
       onClick={scrollToTop}
-      style={{  }}
+      style={{}}
     >
-      <img width="64" height="64" src="/src/assets/icons8-collapse-arrow-64(1).png" alt="collapse-arrow--v1"/>    
+      <img
+        width="64"
+        height="64"
+        src="/src/assets/icons8-collapse-arrow-64(1).png"
+        alt="collapse-arrow--v1"
+      />
     </button>
   );
 };
@@ -26,6 +34,7 @@ const ScrollToTopButton = ({ show }) => {
 const NavBar = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,6 +47,21 @@ const NavBar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleLogout = async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    const formData = new FormData();
+    formData.append("refresh", refreshToken);
+    const response = await Fetch.post(ApiConfig.logout, formData);
+    if (response.status === 204) {
+      localStorage.clear();
+      window.location.href = "/";
+      toast.success("Logged Out Successfully");
+    } else {
+      toast.error("Error Logging Out");
+    }
+  };
+
   return (
     <div className="flex flex-col w-full h-full">
       <div className="flex flex-row justify-between items-center w-full h-16 bg-white border border-gray font-inter bg-[#f4f2ed]">
@@ -52,7 +76,9 @@ const NavBar = () => {
             <NavLink
               to="/"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                location.pathname == "/" ? "text-[#8DBF41] bg-gray-200 p-2 rounded" : ""
+                location.pathname == "/"
+                  ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
+                  : ""
               }`}
             >
               Dashboard
@@ -70,7 +96,9 @@ const NavBar = () => {
             <NavLink
               to="/cctv"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                location.pathname == "/cctv" ? "text-[#8DBF41] bg-gray-200 p-2 rounded" : ""
+                location.pathname == "/cctv"
+                  ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
+                  : ""
               }`}
             >
               CCTVs
@@ -78,7 +106,9 @@ const NavBar = () => {
             <NavLink
               to="/parkings"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                location.pathname == "/parkings" ? "text-[#8DBF41] bg-gray-200 p-2 rounded" : ""
+                location.pathname == "/parkings"
+                  ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
+                  : ""
               }`}
             >
               {console.log(location.pathname == "/parkings")}
@@ -87,7 +117,9 @@ const NavBar = () => {
             <NavLink
               to="/feed"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                location.pathname == "/feed" ? "text-[#8DBF41] bg-gray-200 p-2 rounded" : ""
+                location.pathname == "/feed"
+                  ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
+                  : ""
               }`}
             >
               Real Time Feed
@@ -95,7 +127,9 @@ const NavBar = () => {
             <NavLink
               to="/billing"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                location.pathname == "/billing" ? "text-[#8DBF41] bg-gray-200 p-2 rounded" : ""
+                location.pathname == "/billing"
+                  ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
+                  : ""
               }`}
             >
               Billing
@@ -115,8 +149,7 @@ const NavBar = () => {
         <div
           className="flex flex-row justify-center items-center gap-x-4 mr-2 cursor-pointer"
           onClick={() => {
-            localStorage.clear();
-            window.location.href = "/";
+            handleLogout();
           }}
         >
           <img src={logout} alt="Logout" className="w-8 h-8" />

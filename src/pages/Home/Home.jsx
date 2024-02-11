@@ -156,7 +156,6 @@ const Home = () => {
                     type="submit"
                     className="w-[50%] h-[3rem] bg-black text-[#8DBF41] font-bold px-4 py-2 rounded-lg border border-gray mt-4 hover:bg-[#8DBF41] hover:text-black transition duration-300 ease-in-out"
                     onClick={(e) => {
-                      setFirstPage(false);
                       handleLogin(e);
                     }}
                     value={"Sign In"}
