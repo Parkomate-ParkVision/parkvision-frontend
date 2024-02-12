@@ -9,6 +9,7 @@ import Feed from "./pages/Feed/Feed";
 import Retrainer from "./pages/Retrainer/Retrainer";
 import OrganizationPage from "./pages/Organization/OrganizationPage";
 import IndividualOrganizationPage from "./pages/Organization/IndividualOrganizationPage";
+import CCTVPage from "./pages/CCTV/CCTVPage";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +46,10 @@ export const authRouter = createBrowserRouter([
       {
         path: "retrainer",
         element: <Retrainer />,
+      },
+      {
+        path: "cctv",
+        element: <CCTVPage />,
       },
       {
         path: "organizations",
