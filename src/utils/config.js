@@ -4,4 +4,5 @@ export const ApiConfig = {
     login: `${baseURL}/login/`,
     logout: `${baseURL}/logout/`,
     organizations: `${baseURL}/organizations`,
+    parkings: `${baseURL}/parkings`,
 };
