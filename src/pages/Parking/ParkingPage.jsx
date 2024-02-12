@@ -6,6 +6,7 @@ import Fetch from "../../utils/Fetch";
 import { ApiConfig } from "../../utils/config";
 import Swal from "sweetalert2";
 import X from "../../assets/x.png";
+import { toast } from "react-toastify";
 
 const ParkingPage = () => {
   const [parkings, setParkings] = useState({ results: [] });
@@ -27,6 +28,7 @@ const ParkingPage = () => {
     if (response.status === 200) {
       Swal.fire("Success", "Parking Added Successfully", "success");
       fetchParkings({ next: null });
+      setNewParking({});
     } else {
       Swal.fire("Error", "Error Adding Parking", "error");
     }
@@ -96,7 +98,15 @@ const ParkingPage = () => {
   }, []);
 
   const columns = [
-    { field: "id", headerName: "ID", flex: 0.5 },
+    {
+      field: "Sr. No.",
+      headerName: "Sr. No.",
+      flex: 0.5,
+      renderCell: (params) => (
+        <Typography>{parkings.results.indexOf(params.row) + 1}</Typography>
+      ),
+    },
+    ,
     { field: "organizationName", headerName: "Organization Name", flex: 1 },
     { field: "name", headerName: "totalSlots", flex: 1 },
     { field: "totalSlots", headerName: "Total Slots", flex: 1 },
@@ -131,6 +141,52 @@ const ParkingPage = () => {
             }}
           >
             Update
+          </Button>
+        </Typography>
+      ),
+    },
+    {
+      field: "delete",
+      headerName: "Delete",
+      width: 150,
+      renderCell: (params) => (
+        <Typography>
+          <Button
+            variant="contained"
+            size="small"
+            sx={{
+              backgroundColor: "red",
+              borderColor: "red",
+              color: "black",
+              ":hover": {
+                backgroundColor: "black",
+                color: "white",
+              },
+            }}
+            onClick={(e) => {
+              console.log(params.row.id);
+              Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+              }).then(async (result) => {
+                if (result.isConfirmed) {
+                  const response = await Fetch.delete(
+                    ApiConfig.parkings + "/" + params.row.id + "/"
+                  );
+                  if (response.status === 200) {
+                    toast.success("Parking Deleted Successfully");
+                    fetchParkings({ next: null });
+                  }
+                }
+              });
+            }}
+          >
+            Delete
           </Button>
         </Typography>
       ),
