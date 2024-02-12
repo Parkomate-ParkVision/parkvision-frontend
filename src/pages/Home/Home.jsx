@@ -21,7 +21,7 @@ const Home = () => {
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
-    var response = await Fetch.post(ApiConfig.login, formData);
+    var response = await Fetch.post(ApiConfig.login, {email, password});
     // console.log(await response.json());
     if (response.status === 200) {
       response = await response.json();

@@ -49,10 +49,10 @@ const NavBar = () => {
   }, []);
 
   const handleLogout = async () => {
-    const refreshToken = localStorage.getItem("refreshToken");
+    const refresh = localStorage.getItem("refreshToken");
     const formData = new FormData();
-    formData.append("refresh", refreshToken);
-    const response = await Fetch.post(ApiConfig.logout, formData);
+    formData.append("refresh", refresh);
+    const response = await Fetch.post(ApiConfig.logout, {refresh});
     if (response.status === 204) {
       localStorage.clear();
       window.location.href = "/";
