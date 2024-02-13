@@ -6,4 +6,5 @@ export const ApiConfig = {
     organizations: `${baseURL}/organizations`,
     parkings: `${baseURL}/parkings`,
     cctvs: `${baseURL}/cctvs`,
+    admins: `${baseURL}/admins`,
 };

@@ -20,7 +20,7 @@ export default class Fetch {
     return response;
   }
   static async post(url, data, isAuth = true) {
-    console.log();
+    // console.log();
     const response = await fetch(url, {
       method: "POST",
       headers: isAuth
@@ -62,7 +62,7 @@ export default class Fetch {
     });
     return response;
   }
-  static async delete(url, isAuth = true) {
+  static async delete(url, data, isAuth = true) {
     const response = await fetch(url, {
       method: "DELETE",
       headers: isAuth
@@ -79,6 +79,7 @@ export default class Fetch {
               Intl.DateTimeFormat().resolvedOptions().timeZone,
             "ngrok-skip-browser-warning": "true",
           },
+      body: JSON.stringify(data),
     });
     return response;
   }

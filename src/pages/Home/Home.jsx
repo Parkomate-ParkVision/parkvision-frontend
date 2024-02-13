@@ -17,12 +17,12 @@ const Home = () => {
   const navigate = useNavigate();
 
   const handleLogin = async ({ e }) => {
-    console.log(email, password, userType);
+    // console.log(email, password, userType);
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
-    var response = await Fetch.post(ApiConfig.login, {email, password});
-    // console.log(await response.json());
+    var response = await Fetch.post(ApiConfig.login, { email, password });
+    // // console.log(await response.json());
     if (response.status === 200) {
       response = await response.json();
       localStorage.setItem("accessToken", response.tokens.access);

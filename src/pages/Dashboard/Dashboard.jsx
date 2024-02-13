@@ -36,7 +36,7 @@ const Dashboard = () => {
   const [state, setState] = useState({ value: "Daily", label: "Daily" });
 
   const handleStateChange = (option) => {
-    console.log(option);
+    // console.log(option);
     setState(option);
   };
 
@@ -141,7 +141,7 @@ const Dashboard = () => {
               <OverviewTraffic
                 chartSeries={[63, 15]}
                 labels={["Cars", "Two-wheelers"]}
-                sx={{ height: "100%",borderRadius: "15px" }}
+                sx={{ height: "100%", borderRadius: "15px" }}
               />
             </Grid>
             <Grid xs={12} md={9} lg={6}>
@@ -184,11 +184,13 @@ const Dashboard = () => {
                     updatedAt: subHours(now, 8).getTime(),
                   },
                 ]}
-                sx={{ height: "100%", borderRadius: "15px", padding:'1rem' }}
+                sx={{ height: "100%", borderRadius: "15px", padding: "1rem" }}
               />
             </Grid>
             <Grid xs={12} md={9} lg={6}>
-              <Card sx={{ height: "100%", padding: "1rem", borderRadius: "15px" }}>
+              <Card
+                sx={{ height: "100%", padding: "1rem", borderRadius: "15px" }}
+              >
                 <CardHeader title="Parking Tracker" />
                 <Grid
                   container
@@ -257,18 +259,19 @@ const Dashboard = () => {
             </Grid>
             <Grid xs={12} md={9} lg={7}>
               <OverviewVehicleClassification
-                sx={ {  borderRadius:'15px',paddingLeft:'1rem',} }
+                sx={{ borderRadius: "15px", paddingLeft: "1rem" }}
                 data={[
                   { value: 50, label: "Economy Vehicles" },
                   { value: 23, label: "Mid-range vehicles" },
                   { value: 7, label: "Premium Vehicles" },
                 ]}
-
-                
               />
             </Grid>
             <Grid xs={12} md={9} lg={5}>
-              <ParkingTimes seriesData={[{ data: [2, 3, 5] }]} sx={{paddingLeft:'1rem',borderRadius:'15px'}} />
+              <ParkingTimes
+                seriesData={[{ data: [2, 3, 5] }]}
+                sx={{ paddingLeft: "1rem", borderRadius: "15px" }}
+              />
             </Grid>
             <Grid xs={12} md={9} lg={5.5}>
               <OverviewPeakHours
@@ -279,7 +282,12 @@ const Dashboard = () => {
                     ],
                   },
                 ]}
-                sx={{paddingLeft:'1rem', maxWidth: 700, marginRight: 2, borderRadius:'15px' }}
+                sx={{
+                  paddingLeft: "1rem",
+                  maxWidth: 700,
+                  marginRight: 2,
+                  borderRadius: "15px",
+                }}
               />
             </Grid>
             <Grid xs={12} md={9} lg={6}>
@@ -304,13 +312,23 @@ const Dashboard = () => {
                     updatedAt: subHours(now, 75).getTime(),
                   },
                 ]}
-                sx={{ paddingLeft:'1rem',height: "auto", borderRadius:'15px' }}
+                sx={{
+                  paddingLeft: "1rem",
+                  height: "auto",
+                  borderRadius: "15px",
+                }}
               />
 
               <OverviewWaitingTime
                 difference={7}
                 positive
-                sx={{paddingLeft:'1rem', height: "auto", marginTop:'0.8rem', borderRadius:'15px' , paddingRight:'1rem'}}
+                sx={{
+                  paddingLeft: "1rem",
+                  height: "auto",
+                  marginTop: "0.8rem",
+                  borderRadius: "15px",
+                  paddingRight: "1rem",
+                }}
                 value="34 Minutes"
               />
             </Grid>

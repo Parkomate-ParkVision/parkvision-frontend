@@ -20,7 +20,7 @@ const CCTVPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(newCctv);
+    // console.log(newCctv);
     const response = await Fetch.post(ApiConfig.cctvs + "/", newCctv);
     if (response.status === 200) {
       Swal.fire("Success", "Parking Added Successfully", "success");
@@ -33,7 +33,7 @@ const CCTVPage = () => {
   };
 
   const handleUpdate = async (id) => {
-    console.log(updateCctv);
+    // console.log(updateCctv);
     const response = await Fetch.put(
       ApiConfig.cctvs + "/" + id + "/",
       updateCctv
@@ -57,7 +57,7 @@ const CCTVPage = () => {
           setCctvs(data);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
       setIsLoading(false);
     } else {
@@ -66,11 +66,11 @@ const CCTVPage = () => {
         const response = await Fetch.get(ApiConfig.cctvs + "/");
         if (response.status === 200) {
           const data = await response.json();
-          console.log(data);
+          // console.log(data);
           setCctvs(data);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
       setIsLoading(false);
     }
@@ -82,10 +82,10 @@ const CCTVPage = () => {
       if (response.status === 200) {
         const data = await response.json();
         setParking(data);
-        console.log(data);
+        // console.log(data);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -126,7 +126,7 @@ const CCTVPage = () => {
               },
             }}
             onClick={(e) => {
-              console.log(params.row.id);
+              // console.log(params.row.id);
               setShowVideoFeedModal(true);
             }}
           >
@@ -154,7 +154,7 @@ const CCTVPage = () => {
               },
             }}
             onClick={(e) => {
-              console.log(params.row.id);
+              // console.log(params.row.id);
               setUpdateCctv({
                 id: params.row.id,
                 name: params.row.name,
@@ -187,7 +187,7 @@ const CCTVPage = () => {
               },
             }}
             onClick={(e) => {
-              console.log(params.row.id);
+              // console.log(params.row.id);
               Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",

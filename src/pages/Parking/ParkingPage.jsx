@@ -19,7 +19,7 @@ const ParkingPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(newParking);
+    // console.log(newParking);
     setNewParking({
       ...newParking,
       availableSlots: parseInt(newParking.totalSlots),
@@ -36,7 +36,7 @@ const ParkingPage = () => {
   };
 
   const handleUpdate = async (id) => {
-    console.log(updateParking);
+    // console.log(updateParking);
     const response = await Fetch.put(
       ApiConfig.parkings + "/" + id + "/",
       updateParking
@@ -60,7 +60,7 @@ const ParkingPage = () => {
           setParkings(data);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
       setIsLoading(false);
     } else {
@@ -69,11 +69,11 @@ const ParkingPage = () => {
         const response = await Fetch.get(ApiConfig.parkings + "/");
         if (response.status === 200) {
           const data = await response.json();
-          console.log(data);
+          // console.log(data);
           setParkings(data);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
       setIsLoading(false);
     }
@@ -85,10 +85,10 @@ const ParkingPage = () => {
       if (response.status === 200) {
         const data = await response.json();
         setOrganizations(data);
-        console.log(data);
+        // console.log(data);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -130,7 +130,7 @@ const ParkingPage = () => {
               },
             }}
             onClick={(e) => {
-              console.log(params.row.id);
+              // console.log(params.row.id);
               setUpdateParking({
                 id: params.row.id,
                 name: params.row.name,
@@ -164,7 +164,7 @@ const ParkingPage = () => {
               },
             }}
             onClick={(e) => {
-              console.log(params.row.id);
+              // console.log(params.row.id);
               Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",

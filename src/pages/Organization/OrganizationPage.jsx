@@ -21,20 +21,20 @@ const OrganizationPage = () => {
           setOrganizations(data);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
       setIsLoading(false);
     } else {
       setIsLoading(true);
       try {
         const response = await Fetch.get(ApiConfig.organizations + "/");
-        console.log(response);
+        // console.log(response);
         if (response.status === 200) {
           const data = await response.json();
           setOrganizations(data);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
       setIsLoading(false);
     }
@@ -75,7 +75,7 @@ const OrganizationPage = () => {
               },
             }}
             onClick={() => {
-              navigate(`/organizations/${params.row.id}/`);
+              navigate(`/organizations/${params.row.id}`);
             }}
           >
             View
@@ -130,7 +130,7 @@ const OrganizationPage = () => {
                     ApiConfig.organizations + `/${params.row.id}/`,
                     { name, address, total_slots }
                   );
-                  console.log(response);
+                  // console.log(response);
                   fetchOrganizations({ next: null });
                   Swal.fire({
                     title: "Updated",
@@ -227,7 +227,7 @@ const OrganizationPage = () => {
                 const name = result.value[0];
                 const address = result.value[1];
                 const total_slots = result.value[2];
-                console.log(name, address, total_slots);
+                // console.log(name, address, total_slots);
                 const formData = new FormData();
                 formData.append("name", name);
                 formData.append("address", address);
@@ -236,7 +236,7 @@ const OrganizationPage = () => {
                   ApiConfig.organizations + "/",
                   { name, address, total_slots }
                 );
-                console.log(response.data);
+                // console.log(response.data);
                 fetchOrganizations({ next: null });
                 Swal.fire({
                   title: "Addded",
