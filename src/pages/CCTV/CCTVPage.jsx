@@ -15,6 +15,7 @@ const CCTVPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showVideoFeedModal, setShowVideoFeedModal] = useState(false);
   const [parking, setParking] = useState({ results: [] });
 
   const handleSubmit = async (e) => {
@@ -104,11 +105,11 @@ const CCTVPage = () => {
     },
     ,
     { field: "parkingName", headerName: "Parking", flex: 1 },
-    { field: "name", headerName: "name", flex: 1 },
-    { field: "url", headerName: "url", flex: 1 },
+    { field: "name", headerName: "Name", flex: 1 },
+    { field: "url", headerName: "Link", flex: 1 },
     {
-      field: "action",
-      headerName: "Action",
+      field: "view",
+      headerName: "View",
       width: 150,
       renderCell: (params) => (
         <Typography>
@@ -122,6 +123,34 @@ const CCTVPage = () => {
               ":hover": {
                 backgroundColor: "black",
                 color: "#8DBF41",
+              },
+            }}
+            onClick={(e) => {
+              console.log(params.row.id);
+              setShowVideoFeedModal(true);
+            }}
+          >
+            View
+          </Button>
+        </Typography>
+      ),
+    },
+    {
+      field: "update",
+      headerName: "Update",
+      width: 150,
+      renderCell: (params) => (
+        <Typography>
+          <Button
+            variant="contained"
+            size="small"
+            sx={{
+              backgroundColor: "yellow",
+              borderColor: "yellow",
+              color: "black",
+              ":hover": {
+                backgroundColor: "black",
+                color: "yellow",
               },
             }}
             onClick={(e) => {
@@ -150,11 +179,10 @@ const CCTVPage = () => {
             variant="contained"
             size="small"
             sx={{
-              backgroundColor: "red",
-              borderColor: "red",
+              backgroundColor: "transparent",
               color: "black",
               ":hover": {
-                backgroundColor: "black",
+                backgroundColor: "red",
                 color: "white",
               },
             }}
@@ -181,7 +209,7 @@ const CCTVPage = () => {
               });
             }}
           >
-            Delete
+            <img src="https://img.icons8.com/material-rounded/24/000000/trash.png" />
           </Button>
         </Typography>
       ),
@@ -435,6 +463,53 @@ const CCTVPage = () => {
                     onClick={(e) => handleUpdate(updateCctv.id)}
                   >
                     Update
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : null}
+      {showVideoFeedModal ? (
+        <>
+          <div
+            className="fixed inset-0 bg-black opacity-60 z-40"
+            onClick={() => setShowVideoFeedModal(false)}
+          ></div>
+          <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative mx-auto w-1/2 fkex flex-column justify-center items-center">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                <div className="flex items-center justify-between p-5 border-b border-solid border-gray-300 rounded-t ">
+                  <h3 className="text-2xl font=semibold">Video Feed</h3>
+                  <button
+                    className="bg-transparent border-0 text-black float-right"
+                    onClick={() => {
+                      setShowVideoFeedModal(false);
+                    }}
+                  >
+                    <span className="text-black opacity-7 h-6 w-6 text-xl block py-0 rounded-full">
+                      <img src={X} alt="close" />
+                    </span>
+                  </button>
+                </div>
+                <div className="rounded-tl rounded-tr w-full h-[400px] flex flex-col justify-center items-center">
+                  <iframe
+                    width="100%"
+                    height="400"
+                    src="http://159.242.74.194:85/mjpg/video.mjpg"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                  <button
+                    className="bg-[#8DBF41] w-[5rem] h-[3rem] uppercase text-sm font-bold rounded hover:bg-black hover:text-[#8DBF41] transition duration-300 ease-in-out"
+                    type="button"
+                    onClick={(e) => setShowVideoFeedModal(false)}
+                  >
+                    Close
                   </button>
                 </div>
               </div>

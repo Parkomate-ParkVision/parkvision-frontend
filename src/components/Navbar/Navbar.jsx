@@ -52,7 +52,7 @@ const NavBar = () => {
     const refresh = localStorage.getItem("refreshToken");
     const formData = new FormData();
     formData.append("refresh", refresh);
-    const response = await Fetch.post(ApiConfig.logout, {refresh});
+    const response = await Fetch.post(ApiConfig.logout, { refresh });
     if (response.status === 204) {
       localStorage.clear();
       window.location.href = "/";
@@ -122,16 +122,6 @@ const NavBar = () => {
               }`}
             >
               Parking Lots
-            </NavLink>
-            <NavLink
-              to="/feed"
-              className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                location.pathname == "/feed"
-                  ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
-                  : ""
-              }`}
-            >
-              Real Time Feed
             </NavLink>
             <NavLink
               to="/billing"
