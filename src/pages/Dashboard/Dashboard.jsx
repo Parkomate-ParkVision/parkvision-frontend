@@ -22,7 +22,9 @@ import OverviewPeakHours from "../../components/Overview/overview-peak-hours";
 import { OverviewOverstayed } from "../../components/Overview/overview-overstayed";
 import { OverviewWaitingTime } from "../../components/Overview/overview.waiting-time";
 import FrequencyHero from "../../components/FrequencyHero/FrequencyHero";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Fetch from "../../utils/Fetch";
+import { ApiConfig } from "../../utils/config";
 
 const now = new Date();
 
@@ -35,11 +37,51 @@ const Dashboard = () => {
 
   const [state, setState] = useState({ value: "Daily", label: "Daily" });
 
+  const [vehicleData, setVehicleData] = useState(null)
+  
+  function dayDifference(date1, date2) {
+    // Convert both dates to UTC to ensure consistent calculations
+    const utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
+    const utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
+
+    // Calculate the difference in milliseconds
+    const diffInMs = Math.abs(utc2 - utc1);
+
+    // Convert the difference from milliseconds to days
+    return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+}
+
+
+const [isloading, setisLoading] = useState(true);
+
+const fetchVehicleData = async () => {
+  try {
+    const response = await Fetch.get(ApiConfig.vehicles + "/");
+    if (response.status === 200) {
+      const data = await response.json();
+      setVehicleData(data);
+      setisLoading(false); 
+      console.log(data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+  useEffect(() =>{
+    fetchVehicleData()
+  }, [])
+
+  // console.log(vehicleData)
   const handleStateChange = (option) => {
     // console.log(option);
     setState(option);
   };
 
+  if (isloading) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       <Box
@@ -75,10 +117,48 @@ const Dashboard = () => {
               <Slide direction="right" in={true} mountOnEnter unmountOnExit>
                 <div>
                   <OverviewEntries
-                    difference={12}
+                    difference={
+                      0
+                      // state.value == 'Daily' ? 
+                      // (vehicleData.filter((vehicle) => {
+                      //   const entry  = new Date(vehicle.entry_time)
+                      //   return entry.toDateString() == now.toDateString()
+                      // }).length - vehicleData.filter((vehicle) => {
+                      //   const entry  = new Date(vehicle.entry_time)
+                      //   const yesterday = now;
+                      //   yesterday.setDate(now.getDate() - 1);
+                      //   return entry.toDateString() == yesterday.toDateString()
+                      // }).length)/100 : 
+                      // state.value == 'Weekly' ?
+                      // vehicleData.filter((vehicle) => {
+                      //   const entry  = new Date(vehicle.entry_time)
+                      //   return dayDifference(now, entry) <= 7
+                      // }).length:
+                      // vehicleData.filter((vehicle) => {
+                      //   const entry  = new Date(vehicle.entry_time)
+                      //   return entry.getFullYear() == now.getFullYear() && entry.getMonth() == now.getMonth()
+                      // }).length
+                    
+                    }
+                    state={state}
                     positive
                     sx={{ height: "100%", borderRadius: "15px" }}
-                    value="400"
+                    value={
+                      state.value == 'Daily' ? 
+                      vehicleData.filter((vehicle) => {
+                        const entry  = new Date(vehicle.entry_time)
+                        return entry.toDateString() == now.toDateString()
+                      }).length :
+                      state.value == 'Weekly' ?
+                      vehicleData.filter((vehicle) => {
+                        const entry  = new Date(vehicle.entry_time)
+                        return dayDifference(now, entry) <= 7
+                      }).length:
+                      vehicleData.filter((vehicle) => {
+                        const entry  = new Date(vehicle.entry_time)
+                        return entry.getFullYear() == now.getFullYear() && entry.getMonth() == now.getMonth()
+                      }).length
+                    }
                   />
                 </div>
               </Slide>
@@ -93,9 +173,25 @@ const Dashboard = () => {
                 <div>
                   <OverviewExits
                     difference={16}
+                    state={state}
                     positive={false}
                     sx={{ height: "100%", borderRadius: "15px" }}
-                    value="360"
+                    value={
+                      state.value == 'Daily' ? 
+                      vehicleData.filter((vehicle) => {
+                        const exit  = new Date(vehicle.exit_time)
+                        return exit.toDateString() == now.toDateString()
+                      }).length :
+                      state.value == 'Weekly' ?
+                      vehicleData.filter((vehicle) => {
+                        const exit  = new Date(vehicle.exit_time)
+                        return dayDifference(now, exit) <= 7
+                      }).length:
+                      vehicleData.filter((vehicle) => {
+                        const exit  = new Date(vehicle.exit_time)
+                        return exit.getFullYear() == now.getFullYear() && exit.getMonth() == now.getMonth()
+                      }).length
+                    }
                   />
                 </div>
               </Slide>

@@ -6,7 +6,7 @@ import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/mate
 import LogoutIcon from '@mui/icons-material/Logout';
 
 export const OverviewExits = (props) => {
-  const { difference, positive = false, sx, value } = props;
+  const {state={}, difference, positive = false, sx, value } = props;
 
   return (
     <Card sx={sx}>
@@ -69,7 +69,11 @@ export const OverviewExits = (props) => {
               color="text.secondary"
               variant="caption"
             >
-              Since last week
+              Since last {               
+                  state.value === 'Daily' ? 'day' :
+                  state.value === 'Weekly' ? 'week' :
+                  state.value === 'Monthly' ? 'month' :''
+              }
             </Typography>
           </Stack>
         )}

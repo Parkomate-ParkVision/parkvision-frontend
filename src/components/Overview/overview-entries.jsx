@@ -6,7 +6,7 @@ import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/mate
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 
 export const OverviewEntries = (props) => {
-  const { difference, positive = false, sx, value } = props;
+  const { state={}, difference, positive = false, sx, value } = props;
 
   return (
     <Card sx={sx}>
@@ -69,7 +69,12 @@ export const OverviewEntries = (props) => {
               color="text.secondary"
               variant="caption"
             >
-              Since last week
+              Since last {
+                 state.value === 'Daily' ? 'day' :
+                 state.value === 'Weekly' ? 'week' :
+                 state.value === 'Monthly' ? 'month' :''
+                 
+              }
             </Typography>
           </Stack>
         )}
