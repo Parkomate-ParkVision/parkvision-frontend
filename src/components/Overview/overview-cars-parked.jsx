@@ -72,13 +72,14 @@ const useChartOptions = () => {
         show: true
       },
       categories: [
+        'Sunday',
         'Monday',
         'Tuesday',
         'Wednesday',
         'Thursday',
         'Friday',
         'Saturday',
-        'Sunday'
+        
       ],
       labels: {
         offsetY: 5,

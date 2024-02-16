@@ -21,26 +21,27 @@ import { RiMotorbikeFill } from "react-icons/ri";
 
 
 export const OverviewLatestArrivals = (props) => {
-  const { products = [], sx } = props;
+  const { vehicles = [], sx } = props;
 
   return (
     <Card sx={sx}>
       <CardHeader title="Latest Arrivals" />
       <List>
-        {products.map((product, index) => {
-          const hasDivider = index < products.length - 1;
-          const ago = formatDistanceToNow(product.updatedAt);
-
+        {vehicles.map((vehicle, index) => {
+          const hasDivider = index < vehicles.length - 1;
+          const entry = new Date(vehicle.entry_time)
+          const ago = formatDistanceToNow(entry);
+          const numberPlate = vehicle.number_plate;
           return (
             <ListItem
               divider={hasDivider}
-              key={product.id}
+              key={vehicle.id}
             >
               <ListItemAvatar>
-                {product.wheels ==4 ?<FaCarAlt/>:<RiMotorbikeFill/>}
+                <FaCarAlt/>
               </ListItemAvatar>
               <ListItemText
-                primary={product.name}
+                primary={numberPlate.slice(0, 2) + " " + numberPlate.slice(2, 4) + " " + numberPlate.slice(4)}
                 primaryTypographyProps={{ variant: 'subtitle1' }}
                 secondary={`Arrived ${ago} ago`}
                 secondaryTypographyProps={{ variant: 'body2' }}
@@ -74,6 +75,6 @@ export const OverviewLatestArrivals = (props) => {
 };
 
 OverviewLatestArrivals.propTypes = {
-  products: PropTypes.array,
+  vehicles: PropTypes.array,
   sx: PropTypes.object
 };

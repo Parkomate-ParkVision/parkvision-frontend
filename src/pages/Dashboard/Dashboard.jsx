@@ -51,6 +51,32 @@ const Dashboard = () => {
     return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 }
 
+function differenceInMinutes(date1, date2) {
+  const diffInMs = Math.abs(date2 - date1); // Calculate the absolute difference in milliseconds
+  return Math.floor(diffInMs / (1000 * 60)); // Convert milliseconds to minutes
+}
+
+const calcAvgParking = (vehicles) =>{
+  let totalDuration = 0
+  vehicles.forEach((vehicle) =>{
+    const entry = new Date(vehicle.entry_time)
+    const exit = new Date(vehicle.exit_time)
+    totalDuration = totalDuration + differenceInMinutes(entry, exit)
+    return totalDuration
+  })
+  const ParkingMinutes = totalDuration/vehicles.length
+  return `${Math.floor(ParkingMinutes / 60)} Hours ${Math.floor(ParkingMinutes % 60)} Minutes`
+}
+
+const weeklyVehicleCount = (vehicles) =>{
+  let count =[0,0,0,0,0,0,0]
+  vehicles.forEach((vehicle) =>{
+    const entry = new Date(vehicle.entry_time)
+    const day = entry.getDay()
+    count[day]++
+  })
+  return count
+}
 
 const [isloading, setisLoading] = useState(true);
 
@@ -62,6 +88,7 @@ const fetchVehicleData = async () => {
       setVehicleData(data);
       setisLoading(false); 
       console.log(data);
+      console.log(data.slice(-10))
     }
   } catch (error) {
     console.log(error);
@@ -118,7 +145,6 @@ const fetchVehicleData = async () => {
                 <div>
                   <OverviewEntries
                     difference={
-                      0
                       // state.value == 'Daily' ? 
                       // (vehicleData.filter((vehicle) => {
                       //   const entry  = new Date(vehicle.entry_time)
@@ -130,15 +156,21 @@ const fetchVehicleData = async () => {
                       //   return entry.toDateString() == yesterday.toDateString()
                       // }).length)/100 : 
                       // state.value == 'Weekly' ?
-                      // vehicleData.filter((vehicle) => {
+                      // (vehicleData.filter((vehicle) => {
                       //   const entry  = new Date(vehicle.entry_time)
                       //   return dayDifference(now, entry) <= 7
-                      // }).length:
-                      // vehicleData.filter((vehicle) => {
+                      // }).length - vehicleData.filter((vehicle) => {
+                      //   const entry  = new Date(vehicle.entry_time)
+                      //   return dayDifference(now, entry) > 7 && dayDifference(now, entry) <=14
+                      // }).length)/100:
+                      // (vehicleData.filter((vehicle) => {
                       //   const entry  = new Date(vehicle.entry_time)
                       //   return entry.getFullYear() == now.getFullYear() && entry.getMonth() == now.getMonth()
-                      // }).length
-                    
+                      // }).length - vehicleData.filter((vehicle) => {
+                      //   const entry  = new Date(vehicle.entry_time)
+                      //   return entry.getFullYear() == now.getFullYear() && entry.getMonth() == now.getMonth()-1
+                      // }).length)/100
+                    0
                     }
                     state={state}
                     positive
@@ -213,7 +245,22 @@ const fetchVehicleData = async () => {
                     difference={11}
                     positive
                     sx={{ height: "100%", borderRadius: "15px" }}
-                    value="4 hrs 20 minutes"
+                    value={
+                      state.value == 'Daily' ? 
+                      calcAvgParking(vehicleData.filter((vehicle) => {
+                        const exit  = new Date(vehicle.exit_time)
+                        return exit.toDateString() == now.toDateString()
+                      })) :
+                      state.value == 'Weekly' ?
+                      calcAvgParking(vehicleData.filter((vehicle) => {
+                        const exit  = new Date(vehicle.exit_time)
+                        return dayDifference(now, exit) <= 7
+                      })):
+                      calcAvgParking(vehicleData.filter((vehicle) => {
+                        const exit  = new Date(vehicle.exit_time)
+                        return exit.getFullYear() == now.getFullYear() && exit.getMonth() == now.getMonth()
+                      }))
+                    }
                   />
                 </div>
               </Slide>
@@ -223,11 +270,17 @@ const fetchVehicleData = async () => {
                 chartSeries={[
                   {
                     name: "This week",
-                    data: [180, 160, 50, 80, 30, 140, 140],
+                    data: weeklyVehicleCount(vehicleData.filter((vehicle) => {
+                      const entry  = new Date(vehicle.entry_time)
+                      return dayDifference(now, entry) <= 7
+                    })),
                   },
                   {
                     name: "Last week",
-                    data: [120, 110, 40, 60, 20, 90, 90],
+                    data: weeklyVehicleCount(vehicleData.filter((vehicle) => {
+                      const entry  = new Date(vehicle.entry_time)
+                      return dayDifference(now, entry) > 7 && dayDifference(now, entry) <= 14
+                    })),
                   },
                 ]}
                 sx={{ height: "100%", borderRadius: "15px" }}
@@ -242,44 +295,8 @@ const fetchVehicleData = async () => {
             </Grid>
             <Grid xs={12} md={9} lg={6}>
               <OverviewLatestArrivals
-                products={[
-                  {
-                    id: "5ece2c077e39da27658aa8a9",
-                    name: "MH 12 GK 1234",
-                    wheels: 2,
-                    updatedAt: subHours(now, 1).getTime(),
-                  },
-                  {
-                    id: "5ece2c0d16f70bff2cf86cd8",
-                    name: "MH 14 GR 1274",
-                    wheels: 4,
-                    updatedAt: subHours(now, 3).getTime(),
-                  },
-                  {
-                    id: "b393ce1b09c1254c3a92c827",
-                    name: "MH 12 JK 1232",
-                    wheels: 2,
-                    updatedAt: subHours(now, 4).getTime(),
-                  },
-                  {
-                    id: "a6ede15670da63f49f752c89",
-                    name: "MH 12 SK 1534",
-                    wheels: 4,
-                    updatedAt: subHours(now, 5).getTime(),
-                  },
-                  {
-                    id: "bcad5524fe3a2f8f8620ceda",
-                    name: "MH 12 KK 0234",
-                    wheels: 4,
-                    updatedAt: subHours(now, 6).getTime(),
-                  },
-                  {
-                    id: "bcad5524fe3a2f8f8620ceda",
-                    name: "MH 12 UY 0204",
-                    wheels: 4,
-                    updatedAt: subHours(now, 8).getTime(),
-                  },
-                ]}
+                vehicles={vehicleData.slice(-10)}
+                
                 sx={{ height: "100%", borderRadius: "15px", padding: "1rem" }}
               />
             </Grid>
