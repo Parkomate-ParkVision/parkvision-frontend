@@ -7,10 +7,12 @@ import { ApiConfig } from "../../utils/config";
 import Swal from "sweetalert2";
 import X from "../../assets/x.png";
 import { toast } from "react-toastify";
+import VideoPlayer from "../../components/VideoPlayer/VideoPlayer";
 
 const CCTVPage = () => {
   const [cctvs, setCctvs] = useState({ results: [] });
   const [newCctv, setNewCctv] = useState({});
+  const [feedCctv, setFeedCctv] = useState({});
   const [updateCctv, setUpdateCctv] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -127,6 +129,7 @@ const CCTVPage = () => {
             }}
             onClick={(e) => {
               // console.log(params.row.id);
+              setFeedCctv(params.row);
               setShowVideoFeedModal(true);
             }}
           >
@@ -493,15 +496,11 @@ const CCTVPage = () => {
                   </button>
                 </div>
                 <div className="rounded-tl rounded-tr w-full h-[400px] flex flex-col justify-center items-center">
-                  <iframe
-                    width="100%"
-                    height="400"
-                    src="http://159.242.74.194:85/mjpg/video.mjpg"
-                    title="YouTube video player"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                  ></iframe>
+                  <VideoPlayer
+                    url={
+                      "rtsp://admin:L2755B73@192.168.1.38:554/cam/realmonitor?channel=1&subtype=0"
+                    }
+                  />
                 </div>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
                   <button
