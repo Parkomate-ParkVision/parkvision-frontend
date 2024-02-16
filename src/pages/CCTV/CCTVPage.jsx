@@ -490,9 +490,7 @@ const CCTVPage = () => {
                       setShowVideoFeedModal(false);
                     }}
                   >
-                    <span className="text-black opacity-7 h-6 w-6 text-xl block py-0 rounded-full">
-                      <img src={X} alt="close" />
-                    </span>
+                    {/* <img src={X} alt="" width={"100px"} height={"100px"}/> */}
                   </button>
                 </div>
                 <div className="rounded-tl rounded-tr w-full h-[400px] flex flex-col justify-center items-center">
