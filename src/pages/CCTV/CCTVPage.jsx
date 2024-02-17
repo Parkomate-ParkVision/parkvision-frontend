@@ -484,14 +484,6 @@ const CCTVPage = () => {
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div className="flex items-center justify-between p-5 border-b border-solid border-gray-300 rounded-t ">
                   <h3 className="text-2xl font=semibold">Video Feed</h3>
-                  <button
-                    className="bg-transparent border-0 text-black float-right"
-                    onClick={() => {
-                      setShowVideoFeedModal(false);
-                    }}
-                  >
-                    {/* <img src={X} alt="" width={"100px"} height={"100px"}/> */}
-                  </button>
                 </div>
                 <div className="rounded-tl rounded-tr w-full h-[400px] flex flex-col justify-center items-center">
                   <VideoPlayer
