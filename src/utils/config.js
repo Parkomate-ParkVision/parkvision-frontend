@@ -1,4 +1,4 @@
-export const baseURL = "https://2031-58-84-60-73.ngrok-free.app";
+export const baseURL = "https://03d9-58-84-61-175.ngrok-free.app";
 export const fastAPIURL = "http://127.0.0.1:8080";
 
 export const ApiConfig = {
@@ -8,6 +8,8 @@ export const ApiConfig = {
     parkings: `${baseURL}/parkings`,
     cctvs: `${baseURL}/cctvs`,
     vehicles: `${baseURL}/vehicles`,
+    unverifiedVehicles: `${baseURL}/unverified-vehicles`,
     admins: `${baseURL}/admins`,
+    verification: `${baseURL}/verify-vehicle`,
     cctvFeed: `${fastAPIURL}/video_feed`
 };

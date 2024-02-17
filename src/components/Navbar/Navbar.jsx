@@ -94,14 +94,14 @@ const NavBar = () => {
               Organization
             </NavLink>
             <NavLink
-              to="/retrainer"
+              to="/verifier"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
                 location.pathname == "/retrainer"
                   ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
                   : ""
               }`}
             >
-              Retrainer
+              Verifier
             </NavLink>
             <NavLink
               to="/cctv"
