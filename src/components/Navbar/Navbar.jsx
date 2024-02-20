@@ -33,10 +33,13 @@ const ScrollToTopButton = ({ show }) => {
 
 const NavBar = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const [privilege, setPrivilege] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
+    const privilege = localStorage.getItem("privilege");
+    setPrivilege(String(privilege));
     const handleScroll = () => {
       setShowScrollButton(window.scrollY > 10);
     };
@@ -73,16 +76,18 @@ const NavBar = () => {
             Park<div className="text-[#8DBF41]">Vision</div>
           </NavLink>
           <div className="flex flex-row justify-center items-center font-bold gap-x-8">
-            <NavLink
-              to="/"
-              className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                location.pathname == "/"
-                  ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
-                  : ""
-              }`}
-            >
-              Dashboard
-            </NavLink>
+            {privilege < 1 && (
+              <NavLink
+                to="/"
+                className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
+                  location.pathname == "/"
+                    ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
+                    : ""
+                }`}
+              >
+                Dashboard
+              </NavLink>
+            )}
             <NavLink
               to="/organizations"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
@@ -123,26 +128,30 @@ const NavBar = () => {
             >
               Parking Lots
             </NavLink>
-            <NavLink
-              to="/billing"
-              className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                location.pathname == "/billing"
-                  ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
-                  : ""
-              }`}
-            >
-              Billing
-            </NavLink>
-            <NavLink
-              to="/customer-segmentation"
-              className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                location.pathname == "/customer-segmentation"
-                  ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
-                  : ""
-              }`}
-            >
-              Customer Segmentation
-            </NavLink>
+            {privilege < 1 && (
+              <NavLink
+                to="/billing"
+                className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
+                  location.pathname == "/billing"
+                    ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
+                    : ""
+                }`}
+              >
+                Billing
+              </NavLink>
+            )}
+            {privilege < 1 && (
+              <NavLink
+                to="/customer-segmentation"
+                className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
+                  location.pathname == "/customer-segmentation"
+                    ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
+                    : ""
+                }`}
+              >
+                Customer Segmentation
+              </NavLink>
+            )}
           </div>
         </div>
         <div
