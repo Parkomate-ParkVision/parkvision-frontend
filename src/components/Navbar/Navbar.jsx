@@ -128,6 +128,16 @@ const NavBar = () => {
             >
               Parking Lots
             </NavLink>
+            <NavLink
+              to="/gates"
+              className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
+                location.pathname == "/gates"
+                  ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
+                  : ""
+              }`}
+            >
+              Gates
+            </NavLink>
             {privilege < 1 && (
               <NavLink
                 to="/billing"

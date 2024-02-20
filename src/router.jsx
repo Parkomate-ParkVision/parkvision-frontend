@@ -10,6 +10,7 @@ import Verifier from "./pages/Verifier/Verifier";
 import OrganizationPage from "./pages/Organization/OrganizationPage";
 import IndividualOrganizationPage from "./pages/Organization/IndividualOrganizationPage";
 import CCTVPage from "./pages/CCTV/CCTVPage";
+import GatePage from "./pages/Gates/GatePage";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ export const authRouter = createBrowserRouter([
       {
         path: "cctv",
         element: <CCTVPage />,
+      },
+      {
+        path: "gates",
+        element: <GatePage />,
       },
       {
         path: "organizations",
