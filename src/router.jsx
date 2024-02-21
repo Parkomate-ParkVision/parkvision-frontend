@@ -10,6 +10,7 @@ import Retrainer from "./pages/Retrainer/Retrainer";
 import OrganizationPage from "./pages/Organization/OrganizationPage";
 import IndividualOrganizationPage from "./pages/Organization/IndividualOrganizationPage";
 import CCTVPage from "./pages/CCTV/CCTVPage";
+import CustomerSegmentation from "./pages/Customer-Segmentation/CustomerSegmentation";
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +60,11 @@ export const authRouter = createBrowserRouter([
         path: "organizations/:id",
         element: <IndividualOrganizationPage />,
       },
+      {
+        path: "customer-segmentation",
+        element: <CustomerSegmentation />,
+      },
+      
     ],
   },
   {
