@@ -7,69 +7,66 @@ import { ApiConfig } from "../../utils/config";
 import Swal from "sweetalert2";
 import X from "../../assets/x.png";
 import { toast } from "react-toastify";
-import VideoPlayer from "../../components/VideoPlayer/VideoPlayer";
 
-const CCTVPage = () => {
-  const [cctvs, setCctvs] = useState({ results: [] });
-  const [newCctv, setNewCctv] = useState({});
-  const [feedCctv, setFeedCctv] = useState({});
-  const [updateCctv, setUpdateCctv] = useState({});
+const GatePage = () => {
+  const [gates, setGates] = useState({ results: [] });
+  const [newGate, setNewGates] = useState({});
+  const [updateGate, setUpdateGate] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [showVideoFeedModal, setShowVideoFeedModal] = useState(false);
-  const [parking, setParking] = useState({ results: [] });
+  const [organizations, setOrganizations] = useState({ results: [] });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(newCctv);
-    const response = await Fetch.post(ApiConfig.cctvs + "/", newCctv);
-    if (response.status === 200) {
-      Swal.fire("Success", "Parking Added Successfully", "success");
-      fetchCctvs({ next: null });
-      setNewCctv({});
+    // console.log(newGate);
+    const response = await Fetch.post(ApiConfig.gates + "/", newGate);
+    if (response.status === 201) {
+      Swal.fire("Success", "Gate Added Successfully", "success");
+      fetchGates({ next: null });
+      setNewGates({});
     } else {
-      Swal.fire("Error", "Error Adding Parking", "error");
+      Swal.fire("Error", "Error Adding Gate", "error");
     }
     setShowModal(false);
   };
 
   const handleUpdate = async (id) => {
-    // console.log(updateCctv);
+    // console.log(updateGate);
     const response = await Fetch.put(
-      ApiConfig.cctvs + "/" + id + "/",
-      updateCctv
+      ApiConfig.gates + "/" + id + "/",
+      updateGate
     );
-    if (response.status === 200) {
-      Swal.fire("Success", "Parking Updated Successfully", "success");
-      fetchCctvs({ next: null });
+    if (response.status === 201) {
+      Swal.fire("Success", "Gate Updated Successfully", "success");
+      fetchGates({ next: null });
       setShowUpdateModal(false);
     } else {
-      Swal.fire("Error", "Error Updating Parking", "error");
+      Swal.fire("Error", "Error Updating Gate", "error");
     }
   };
 
-  const fetchCctvs = async ({ next = null }) => {
+  const fetchGates = async ({ next = null }) => {
     if (next) {
       setIsLoading(true);
       try {
         const response = await Fetch.get(next);
-        if (response.status === 200) {
+        if (response.status === 201) {
           const data = await response.json();
-          setCctvs(data);
+          setGates(data);
         }
       } catch (error) {
-        // console.log(error);
+        console.log(error);
       }
       setIsLoading(false);
     } else {
       setIsLoading(true);
       try {
-        const response = await Fetch.get(ApiConfig.cctvs + "/");
+        const response = await Fetch.get(ApiConfig.gates + "/");
         if (response.status === 200) {
           const data = await response.json();
           // console.log(data);
-          setCctvs(data);
+          setGates(data);
         }
       } catch (error) {
         // console.log(error);
@@ -78,12 +75,12 @@ const CCTVPage = () => {
     }
   };
 
-  const fetchParking = async () => {
+  const fetchOrganization = async () => {
     try {
-      const response = await Fetch.get(ApiConfig.parkings + "/");
+      const response = await Fetch.get(ApiConfig.organizations + "/");
       if (response.status === 200) {
         const data = await response.json();
-        setParking(data);
+        setOrganizations(data);
         // console.log(data);
       }
     } catch (error) {
@@ -92,8 +89,8 @@ const CCTVPage = () => {
   };
 
   useEffect(() => {
-    fetchCctvs({ next: null });
-    fetchParking();
+    fetchGates({ next: null });
+    fetchOrganization();
   }, []);
 
   const columns = [
@@ -102,16 +99,19 @@ const CCTVPage = () => {
       headerName: "Sr. No.",
       flex: 0.5,
       renderCell: (params) => (
-        <Typography>{cctvs.results.indexOf(params.row) + 1}</Typography>
+        <Typography>{gates.results.indexOf(params.row) + 1}</Typography>
       ),
     },
-    ,
-    { field: "parkingName", headerName: "Parking", flex: 1 },
-    { field: "name", headerName: "Name", flex: 1 },
-    { field: "url", headerName: "Link", flex: 1 },
+    // { field: "organization", headerName: "Organization Id", flex: 1 },
+    { field: "organizationName", headerName: "Organization Name", flex: 1 },
     {
-      field: "view",
-      headerName: "View",
+      field: "organizationAddress",
+      headerName: "Organization Address",
+      flex: 1,
+    },
+    {
+      field: "action",
+      headerName: "Action",
       width: 150,
       renderCell: (params) => (
         <Typography>
@@ -129,41 +129,14 @@ const CCTVPage = () => {
             }}
             onClick={(e) => {
               // console.log(params.row.id);
-              setFeedCctv(params.row);
-              setShowVideoFeedModal(true);
-            }}
-          >
-            View
-          </Button>
-        </Typography>
-      ),
-    },
-    {
-      field: "update",
-      headerName: "Update",
-      width: 150,
-      renderCell: (params) => (
-        <Typography>
-          <Button
-            variant="contained"
-            size="small"
-            sx={{
-              backgroundColor: "yellow",
-              borderColor: "yellow",
-              color: "black",
-              ":hover": {
-                backgroundColor: "black",
-                color: "yellow",
-              },
-            }}
-            onClick={(e) => {
-              // console.log(params.row.id);
-              setUpdateCctv({
+              setUpdateGate({
                 id: params.row.id,
-                name: params.row.name,
-                parking: params.row.parking,
-                url: params.row.url,
+                organization: params.row.organization,
               });
+              // console.log({
+              //   id: params.row.id,
+              //   organization: params.row.organization,
+              // });
               setShowUpdateModal(true);
             }}
           >
@@ -182,10 +155,11 @@ const CCTVPage = () => {
             variant="contained"
             size="small"
             sx={{
-              backgroundColor: "transparent",
+              backgroundColor: "red",
+              borderColor: "red",
               color: "black",
               ":hover": {
-                backgroundColor: "red",
+                backgroundColor: "black",
                 color: "white",
               },
             }}
@@ -202,17 +176,17 @@ const CCTVPage = () => {
               }).then(async (result) => {
                 if (result.isConfirmed) {
                   const response = await Fetch.delete(
-                    ApiConfig.cctvs + "/" + params.row.id + "/"
+                    ApiConfig.gates + "/" + params.row.id + "/"
                   );
                   if (response.status === 200) {
-                    toast.success("Parking Deleted Successfully");
-                    fetchCctvs({ next: null });
+                    toast.success("Gate Deleted Successfully");
+                    fetchGates({ next: null });
                   }
                 }
               });
             }}
           >
-            <img src="https://img.icons8.com/material-rounded/24/000000/trash.png" />
+            Delete
           </Button>
         </Typography>
       ),
@@ -226,7 +200,7 @@ const CCTVPage = () => {
   return (
     <div className="flex flex-col gap-y-4 h-full w-[80%] mt-4">
       <div className="flex flex-row justify-between items-center">
-        <div className="font-bold text-2xl">CCTV</div>
+        <div className="font-bold text-2xl">Gate</div>
         <button
           className="bg-[#8DBF41] text-black px-4 py-2 rounded-lg"
           onClick={() => {
@@ -238,7 +212,7 @@ const CCTVPage = () => {
       </div>
       <div style={{ height: "80vh", width: "100%" }}>
         <DataGrid
-          rows={cctvs.results}
+          rows={gates.results}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[1]}
@@ -254,12 +228,12 @@ const CCTVPage = () => {
             <div className="relative mx-auto w-1/2 fkex flex-column justify-center items-center">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div className="flex items-center justify-between p-5 border-b border-solid border-gray-300 rounded-t ">
-                  <h3 className="text-2xl font=semibold">Add CCTV</h3>
+                  <h3 className="text-2xl font=semibold">Add Gate</h3>
                   <button
                     className="bg-transparent border-0 text-black float-right"
                     onClick={() => {
                       setShowModal(false);
-                      setNewCctv({});
+                      setNewGates({});
                     }}
                   >
                     <span className="text-black opacity-7 h-6 w-6 text-xl block py-0 rounded-full">
@@ -270,66 +244,33 @@ const CCTVPage = () => {
                 <div className="">
                   <form className="rounded w-full" onSubmit={handleSubmit}>
                     <div className="flex flex-col justify-between pt-4 px-4">
-                      <label htmlFor="Name" className="text-sm">
-                        Name
+                      <label htmlFor="Organization" className="text-sm">
+                        Organization
                       </label>
-                      <input
-                        type="text"
-                        name="Name"
-                        id="Name"
-                        className="border-2 border-gray-300 rounded-md p-2"
-                        value={newCctv.name}
-                        onChange={(e) => {
-                          setNewCctv({
-                            ...newCctv,
-                            name: e.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="flex flex-col justify-between pt-4 px-4">
-                      <label htmlFor="Parking" className="text-sm">
-                        Parking
-                      </label>
-                      {parking.results && (
+                      {organizations.results && (
                         <select
-                          name="Parking"
-                          id="Parking"
+                          name="Organization"
+                          id="Organization"
                           className="border-2 border-gray-300 rounded-md p-2"
-                          value={newCctv.parking}
+                          value={newGate.organization}
                           onChange={(e) => {
-                            setNewCctv({
-                              ...newCctv,
-                              parking: e.target.value,
+                            setNewGates({
+                              ...newGate,
+                              organization: e.target.value,
                             });
                           }}
                         >
-                          <option value="">Select Parking</option>
-                          {parking.results.map((parking) => (
-                            <option value={parking.id} key={parking.idc}>
-                              {parking.name}
+                          <option value="">Select Organization</option>
+                          {organizations.results.map((organization) => (
+                            <option
+                              value={organization.id}
+                              key={organization.id}
+                            >
+                              {organization.name}
                             </option>
                           ))}
                         </select>
                       )}
-                    </div>
-                    <div className="flex flex-col justify-between pt-4 px-4">
-                      <label htmlFor="URL" className="text-sm">
-                        URL
-                      </label>
-                      <input
-                        type="url"
-                        name="URL"
-                        id="URL"
-                        className="border-2 border-gray-300 rounded-md p-2"
-                        value={newCctv.url}
-                        onChange={(e) => {
-                          setNewCctv({
-                            ...newCctv,
-                            url: e.target.value,
-                          });
-                        }}
-                      />
                     </div>
                   </form>
                 </div>
@@ -339,7 +280,7 @@ const CCTVPage = () => {
                     type="button"
                     onClick={() => {
                       setShowModal(false);
-                      setNewCctv({ ...newCctv });
+                      setNewGates({ ...newGate });
                     }}
                   >
                     Cancel
@@ -367,12 +308,12 @@ const CCTVPage = () => {
             <div className="relative mx-auto w-1/2 fkex flex-column justify-center items-center">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 <div className="flex items-center justify-between p-5 border-b border-solid border-gray-300 rounded-t ">
-                  <h3 className="text-2xl font=semibold">Update Parking</h3>
+                  <h3 className="text-2xl font=semibold">Update Gate</h3>
                   <button
                     className="bg-transparent border-0 text-black float-right"
                     onClick={() => {
                       setShowUpdateModal(false);
-                      setUpdateCctv({});
+                      setUpdateGate({});
                     }}
                   >
                     <span className="text-black opacity-7 h-6 w-6 text-xl block py-0 rounded-full">
@@ -383,69 +324,33 @@ const CCTVPage = () => {
                 <div className="">
                   <form className="rounded w-full" onSubmit={handleUpdate}>
                     <div className="flex flex-col justify-between pt-4 px-4">
-                      <label htmlFor="Name" className="text-sm">
-                        Name
+                      <label htmlFor="Organization" className="text-sm">
+                        Organization
                       </label>
-                      <input
-                        type="text"
-                        name="Name"
-                        id="Name"
-                        className="border-2 border-gray-300 rounded-md p-2"
-                        value={updateCctv.name}
-                        onChange={(e) => {
-                          setUpdateCctv({
-                            ...updateCctv,
-                            name: e.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="flex flex-col justify-between pt-4 px-4">
-                      <label htmlFor="Parking" className="text-sm">
-                        Parking
-                      </label>
-                      {parking.results && (
+                      {organizations.results && (
                         <select
-                          name="Parking"
-                          id="Parking"
+                          name="Organization"
+                          id="Organization"
                           className="border-2 border-gray-300 rounded-md p-2"
-                          value={updateCctv.organization}
+                          value={updateGate.organization}
                           onChange={(e) => {
-                            setUpdateCctv({
-                              ...updateCctv,
+                            setUpdateGate({
+                              ...updateGate,
                               organization: e.target.value,
                             });
                           }}
                         >
-                          <option value="">Select Parking</option>
-                          {parking.results.map((organization) => (
+                          <option value="">Select Organization</option>
+                          {organizations.results.map((organization) => (
                             <option
                               value={organization.id}
-                              key={organization.idc}
+                              key={organization.id}
                             >
                               {organization.name}
                             </option>
                           ))}
                         </select>
                       )}
-                    </div>
-                    <div className="flex flex-col justify-between pt-4 px-4">
-                      <label htmlFor="URL" className="text-sm">
-                        URL
-                      </label>
-                      <input
-                        type="text"
-                        name="URL"
-                        id="URL"
-                        className="border-2 border-gray-300 rounded-md p-2"
-                        value={updateCctv.url}
-                        onChange={(e) => {
-                          setUpdateCctv({
-                            ...updateCctv,
-                            url: e.target.value,
-                          });
-                        }}
-                      />
                     </div>
                   </form>
                 </div>
@@ -455,7 +360,7 @@ const CCTVPage = () => {
                     type="button"
                     onClick={() => {
                       setShowUpdateModal(false);
-                      setUpdateCctv({ ...updateCctv });
+                      setUpdateGate({ ...updateGate });
                     }}
                   >
                     Cancel
@@ -463,42 +368,9 @@ const CCTVPage = () => {
                   <button
                     className="bg-[#8DBF41] w-[5rem] h-[3rem] uppercase text-sm font-bold rounded hover:bg-black hover:text-[#8DBF41] transition duration-300 ease-in-out"
                     type="button"
-                    onClick={(e) => handleUpdate(updateCctv.id)}
+                    onClick={(e) => handleUpdate(updateGate.id)}
                   >
                     Update
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      ) : null}
-      {showVideoFeedModal ? (
-        <>
-          <div
-            className="fixed inset-0 bg-black opacity-60 z-40"
-            onClick={() => setShowVideoFeedModal(false)}
-          ></div>
-          <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative mx-auto w-1/2 fkex flex-column justify-center items-center">
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                <div className="flex items-center justify-between p-5 border-b border-solid border-gray-300 rounded-t ">
-                  <h3 className="text-2xl font=semibold">Video Feed</h3>
-                </div>
-                <div className="rounded-tl rounded-tr w-full h-[400px] flex flex-col justify-center items-center">
-                  <VideoPlayer
-                    url={
-                      "rtsp://admin:L2755B73@192.168.1.38:554/cam/realmonitor?channel=1&subtype=0"
-                    }
-                  />
-                </div>
-                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
-                  <button
-                    className="bg-[#8DBF41] w-[5rem] h-[3rem] uppercase text-sm font-bold rounded hover:bg-black hover:text-[#8DBF41] transition duration-300 ease-in-out"
-                    type="button"
-                    onClick={(e) => setShowVideoFeedModal(false)}
-                  >
-                    Close
                   </button>
                 </div>
               </div>
@@ -510,4 +382,4 @@ const CCTVPage = () => {
   );
 };
 
-export default CCTVPage;
+export default GatePage;

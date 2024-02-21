@@ -37,68 +37,79 @@ const Dashboard = () => {
 
   const [state, setState] = useState({ value: "Daily", label: "Daily" });
 
-  const [vehicleData, setVehicleData] = useState(null)
-  
+  const [vehicleData, setVehicleData] = useState(null);
+
   function dayDifference(date1, date2) {
     // Convert both dates to UTC to ensure consistent calculations
-    const utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
-    const utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
+    const utc1 = Date.UTC(
+      date1.getFullYear(),
+      date1.getMonth(),
+      date1.getDate()
+    );
+    const utc2 = Date.UTC(
+      date2.getFullYear(),
+      date2.getMonth(),
+      date2.getDate()
+    );
 
     // Calculate the difference in milliseconds
     const diffInMs = Math.abs(utc2 - utc1);
 
     // Convert the difference from milliseconds to days
     return Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-}
-
-function differenceInMinutes(date1, date2) {
-  const diffInMs = Math.abs(date2 - date1); // Calculate the absolute difference in milliseconds
-  return Math.floor(diffInMs / (1000 * 60)); // Convert milliseconds to minutes
-}
-
-const calcAvgParking = (vehicles) =>{
-  let totalDuration = 0
-  vehicles.forEach((vehicle) =>{
-    const entry = new Date(vehicle.entry_time)
-    const exit = new Date(vehicle.exit_time)
-    totalDuration = totalDuration + differenceInMinutes(entry, exit)
-    return totalDuration
-  })
-  const ParkingMinutes = totalDuration/vehicles.length
-  return `${Math.floor(ParkingMinutes / 60)} Hours ${Math.floor(ParkingMinutes % 60)} Minutes`
-}
-
-const weeklyVehicleCount = (vehicles) =>{
-  let count =[0,0,0,0,0,0,0]
-  vehicles.forEach((vehicle) =>{
-    const entry = new Date(vehicle.entry_time)
-    const day = entry.getDay()
-    count[day]++
-  })
-  return count
-}
-
-const [isloading, setisLoading] = useState(true);
-
-const fetchVehicleData = async () => {
-  try {
-    const response = await Fetch.get(ApiConfig.vehicles + "/");
-    if (response.status === 200) {
-      const data = await response.json();
-      setVehicleData(data);
-      setisLoading(false); 
-      console.log(data);
-      console.log(data.slice(-10))
-    }
-  } catch (error) {
-    console.log(error);
   }
-};
 
+  function differenceInMinutes(date1, date2) {
+    const diffInMs = Math.abs(date2 - date1); // Calculate the absolute difference in milliseconds
+    return Math.floor(diffInMs / (1000 * 60)); // Convert milliseconds to minutes
+  }
 
-  useEffect(() =>{
-    fetchVehicleData()
-  }, [])
+  const calcAvgParking = (vehicles) => {
+    let totalDuration = 0;
+    vehicles.forEach((vehicle) => {
+      const entry = new Date(vehicle.entry_time);
+      const exit = new Date(vehicle.exit_time);
+      totalDuration = totalDuration + differenceInMinutes(entry, exit);
+      return totalDuration;
+    });
+    const ParkingMinutes = totalDuration / vehicles.length;
+    return `${Math.floor(ParkingMinutes / 60)} Hours ${Math.floor(
+      ParkingMinutes % 60
+    )} Minutes`;
+  };
+
+  const weeklyVehicleCount = (vehicles) => {
+    let count = [0, 0, 0, 0, 0, 0, 0];
+    vehicles.forEach((vehicle) => {
+      const entry = new Date(vehicle.entry_time);
+      const day = entry.getDay();
+      count[day]++;
+    });
+    return count;
+  };
+
+  const [isloading, setisLoading] = useState(true);
+
+  const fetchVehicleData = async () => {
+    try {
+      const response = await Fetch.get(
+        ApiConfig.vehicles + "/?isPaginated=false"
+      );
+      if (response.status === 200) {
+        const data = await response.json();
+        setVehicleData(data);
+        setisLoading(false);
+        // console.log(data);
+        // console.log(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchVehicleData();
+  }, []);
 
   // console.log(vehicleData)
   const handleStateChange = (option) => {
@@ -145,7 +156,7 @@ const fetchVehicleData = async () => {
                 <div>
                   <OverviewEntries
                     difference={
-                      // state.value == 'Daily' ? 
+                      // state.value == 'Daily' ?
                       // (vehicleData.filter((vehicle) => {
                       //   const entry  = new Date(vehicle.entry_time)
                       //   return entry.toDateString() == now.toDateString()
@@ -154,7 +165,7 @@ const fetchVehicleData = async () => {
                       //   const yesterday = now;
                       //   yesterday.setDate(now.getDate() - 1);
                       //   return entry.toDateString() == yesterday.toDateString()
-                      // }).length)/100 : 
+                      // }).length)/100 :
                       // state.value == 'Weekly' ?
                       // (vehicleData.filter((vehicle) => {
                       //   const entry  = new Date(vehicle.entry_time)
@@ -170,26 +181,29 @@ const fetchVehicleData = async () => {
                       //   const entry  = new Date(vehicle.entry_time)
                       //   return entry.getFullYear() == now.getFullYear() && entry.getMonth() == now.getMonth()-1
                       // }).length)/100
-                    0
+                      0
                     }
                     state={state}
                     positive
                     sx={{ height: "100%", borderRadius: "15px" }}
                     value={
-                      state.value == 'Daily' ? 
-                      vehicleData.filter((vehicle) => {
-                        const entry  = new Date(vehicle.entry_time)
-                        return entry.toDateString() == now.toDateString()
-                      }).length :
-                      state.value == 'Weekly' ?
-                      vehicleData.filter((vehicle) => {
-                        const entry  = new Date(vehicle.entry_time)
-                        return dayDifference(now, entry) <= 7
-                      }).length:
-                      vehicleData.filter((vehicle) => {
-                        const entry  = new Date(vehicle.entry_time)
-                        return entry.getFullYear() == now.getFullYear() && entry.getMonth() == now.getMonth()
-                      }).length
+                      state.value == "Daily"
+                        ? vehicleData.filter((vehicle) => {
+                            const entry = new Date(vehicle.entry_time);
+                            return entry.toDateString() == now.toDateString();
+                          }).length
+                        : state.value == "Weekly"
+                        ? vehicleData.filter((vehicle) => {
+                            const entry = new Date(vehicle.entry_time);
+                            return dayDifference(now, entry) <= 7;
+                          }).length
+                        : vehicleData.filter((vehicle) => {
+                            const entry = new Date(vehicle.entry_time);
+                            return (
+                              entry.getFullYear() == now.getFullYear() &&
+                              entry.getMonth() == now.getMonth()
+                            );
+                          }).length
                     }
                   />
                 </div>
@@ -209,20 +223,23 @@ const fetchVehicleData = async () => {
                     positive={false}
                     sx={{ height: "100%", borderRadius: "15px" }}
                     value={
-                      state.value == 'Daily' ? 
-                      vehicleData.filter((vehicle) => {
-                        const exit  = new Date(vehicle.exit_time)
-                        return exit.toDateString() == now.toDateString()
-                      }).length :
-                      state.value == 'Weekly' ?
-                      vehicleData.filter((vehicle) => {
-                        const exit  = new Date(vehicle.exit_time)
-                        return dayDifference(now, exit) <= 7
-                      }).length:
-                      vehicleData.filter((vehicle) => {
-                        const exit  = new Date(vehicle.exit_time)
-                        return exit.getFullYear() == now.getFullYear() && exit.getMonth() == now.getMonth()
-                      }).length
+                      state.value == "Daily"
+                        ? vehicleData.filter((vehicle) => {
+                            const exit = new Date(vehicle.exit_time);
+                            return exit.toDateString() == now.toDateString();
+                          }).length
+                        : state.value == "Weekly"
+                        ? vehicleData.filter((vehicle) => {
+                            const exit = new Date(vehicle.exit_time);
+                            return dayDifference(now, exit) <= 7;
+                          }).length
+                        : vehicleData.filter((vehicle) => {
+                            const exit = new Date(vehicle.exit_time);
+                            return (
+                              exit.getFullYear() == now.getFullYear() &&
+                              exit.getMonth() == now.getMonth()
+                            );
+                          }).length
                     }
                   />
                 </div>
@@ -246,20 +263,29 @@ const fetchVehicleData = async () => {
                     positive
                     sx={{ height: "100%", borderRadius: "15px" }}
                     value={
-                      state.value == 'Daily' ? 
-                      calcAvgParking(vehicleData.filter((vehicle) => {
-                        const exit  = new Date(vehicle.exit_time)
-                        return exit.toDateString() == now.toDateString()
-                      })) :
-                      state.value == 'Weekly' ?
-                      calcAvgParking(vehicleData.filter((vehicle) => {
-                        const exit  = new Date(vehicle.exit_time)
-                        return dayDifference(now, exit) <= 7
-                      })):
-                      calcAvgParking(vehicleData.filter((vehicle) => {
-                        const exit  = new Date(vehicle.exit_time)
-                        return exit.getFullYear() == now.getFullYear() && exit.getMonth() == now.getMonth()
-                      }))
+                      state.value == "Daily"
+                        ? calcAvgParking(
+                            vehicleData.filter((vehicle) => {
+                              const exit = new Date(vehicle.exit_time);
+                              return exit.toDateString() == now.toDateString();
+                            })
+                          )
+                        : state.value == "Weekly"
+                        ? calcAvgParking(
+                            vehicleData.filter((vehicle) => {
+                              const exit = new Date(vehicle.exit_time);
+                              return dayDifference(now, exit) <= 7;
+                            })
+                          )
+                        : calcAvgParking(
+                            vehicleData.filter((vehicle) => {
+                              const exit = new Date(vehicle.exit_time);
+                              return (
+                                exit.getFullYear() == now.getFullYear() &&
+                                exit.getMonth() == now.getMonth()
+                              );
+                            })
+                          )
                     }
                   />
                 </div>
@@ -270,17 +296,24 @@ const fetchVehicleData = async () => {
                 chartSeries={[
                   {
                     name: "This week",
-                    data: weeklyVehicleCount(vehicleData.filter((vehicle) => {
-                      const entry  = new Date(vehicle.entry_time)
-                      return dayDifference(now, entry) <= 7
-                    })),
+                    data: weeklyVehicleCount(
+                      vehicleData.filter((vehicle) => {
+                        const entry = new Date(vehicle.entry_time);
+                        return dayDifference(now, entry) <= 7;
+                      })
+                    ),
                   },
                   {
                     name: "Last week",
-                    data: weeklyVehicleCount(vehicleData.filter((vehicle) => {
-                      const entry  = new Date(vehicle.entry_time)
-                      return dayDifference(now, entry) > 7 && dayDifference(now, entry) <= 14
-                    })),
+                    data: weeklyVehicleCount(
+                      vehicleData.filter((vehicle) => {
+                        const entry = new Date(vehicle.entry_time);
+                        return (
+                          dayDifference(now, entry) > 7 &&
+                          dayDifference(now, entry) <= 14
+                        );
+                      })
+                    ),
                   },
                 ]}
                 sx={{ height: "100%", borderRadius: "15px" }}
@@ -295,8 +328,7 @@ const fetchVehicleData = async () => {
             </Grid>
             <Grid xs={12} md={9} lg={6}>
               <OverviewLatestArrivals
-                vehicles={vehicleData.slice(-10)}
-                
+                vehicles={vehicleData}
                 sx={{ height: "100%", borderRadius: "15px", padding: "1rem" }}
               />
             </Grid>

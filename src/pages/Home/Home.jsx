@@ -25,9 +25,10 @@ const Home = () => {
     // // console.log(await response.json());
     if (response.status === 200) {
       response = await response.json();
+      console.log(response);
       localStorage.setItem("accessToken", response.tokens.access);
       localStorage.setItem("refreshToken", response.tokens.refresh);
-      localStorage.setItem("userType", userType);
+      localStorage.setItem("privilege", response.tokens.privilege);
       window.location.href = "";
       toast.success("Logged In Successfully");
     } else {

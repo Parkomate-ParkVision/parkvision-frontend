@@ -6,11 +6,12 @@ import NavBar from "./components/Navbar/Navbar";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ParkingPage from "./pages/Parking/ParkingPage";
 import Feed from "./pages/Feed/Feed";
-import Retrainer from "./pages/Retrainer/Retrainer";
+import Verifier from "./pages/Verifier/Verifier";
 import OrganizationPage from "./pages/Organization/OrganizationPage";
 import IndividualOrganizationPage from "./pages/Organization/IndividualOrganizationPage";
 import CCTVPage from "./pages/CCTV/CCTVPage";
 import CustomerSegmentation from "./pages/Customer-Segmentation/CustomerSegmentation";
+import GatePage from "./pages/Gates/GatePage";
 
 export const router = createBrowserRouter([
   {
@@ -45,12 +46,16 @@ export const authRouter = createBrowserRouter([
         element: <Feed />,
       },
       {
-        path: "retrainer",
-        element: <Retrainer />,
+        path: "verifier",
+        element: <Verifier />,
       },
       {
         path: "cctv",
         element: <CCTVPage />,
+      },
+      {
+        path: "gates",
+        element: <GatePage />,
       },
       {
         path: "organizations",
