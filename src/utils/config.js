@@ -9,6 +9,7 @@ export const ApiConfig = {
     parkings: `${baseURL}/parkings`,
     cctvs: `${baseURL}/cctvs`,
     vehicles: `${baseURL}/vehicles`,
+    getVehiclesByOrganization: `${baseURL}/organization-vehicles`,
     unverifiedVehicles: `${baseURL}/unverified-vehicles`,
     admins: `${baseURL}/admins`,
     verification: `${baseURL}/verify-vehicle`,

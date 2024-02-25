@@ -36,7 +36,8 @@ const Dashboard = () => {
   ];
 
   const [state, setState] = useState({ value: "Daily", label: "Daily" });
-
+  const [selectedOrganization, setSelectedOrganization] = useState(null);
+  const [organizations, setOrganizations] = useState([]);
   const [vehicleData, setVehicleData] = useState(null);
 
   function dayDifference(date1, date2) {
@@ -93,13 +94,15 @@ const Dashboard = () => {
   const fetchVehicleData = async () => {
     try {
       const response = await Fetch.get(
-        ApiConfig.vehicles + "/?isPaginated=false"
+        ApiConfig.getVehiclesByOrganization +
+          "/" +
+          selectedOrganization.id +
+          "/"
       );
       if (response.status === 200) {
         const data = await response.json();
         setVehicleData(data);
         setisLoading(false);
-        // console.log(data);
         // console.log(data);
       }
     } catch (error) {
@@ -107,8 +110,22 @@ const Dashboard = () => {
     }
   };
 
+  const fetchOrganizations = async () => {
+    try {
+      const response = await Fetch.get(ApiConfig.organizations);
+      if (response.status === 200) {
+        const data = await response.json();
+        setOrganizations(data);
+        fetchVehicleData();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    fetchVehicleData();
+    fetchOrganizations();
+    setSelectedOrganization(organizations.results[0]);
   }, []);
 
   // console.log(vehicleData)
@@ -126,10 +143,33 @@ const Dashboard = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          py: 8,
+          py: 2,
         }}
         className="w-full h-full bg-[#f4f2ed] flex flex-col items-center justify-center"
       >
+        <div className="flex flex-row items-center justify-center mb-8 w-full h-20 bg-[#f4f2ed]">
+          <h1 className="mr-4">Organization: </h1>
+          <select
+            name="Organization"
+            id="organization"
+            className="p-2"
+            value={selectedOrganization.id}
+            onChange={(e) => {
+              setSelectedOrganization(
+                organizations.results.find(
+                  (organization) => organization.id == e.target.value
+                )
+              );
+              fetchVehicleData();
+            }}
+          >
+            {organizations.results.map((organization) => (
+              <option value={organization.id} key={organization.id}>
+                {organization.name}
+              </option>
+            ))}
+          </select>
+        </div>
         <Container maxWidth="xl">
           <Box
             sx={{
