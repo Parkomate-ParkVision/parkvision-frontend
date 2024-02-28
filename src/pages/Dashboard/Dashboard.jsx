@@ -91,19 +91,15 @@ const Dashboard = () => {
 
   const [isloading, setisLoading] = useState(true);
 
-  const fetchVehicleData = async () => {
+  const fetchVehicleData = async (orgData) => {
     try {
       const response = await Fetch.get(
-        ApiConfig.getVehiclesByOrganization +
-          "/" +
-          selectedOrganization.id +
-          "/"
+        ApiConfig.getVehiclesByOrganization + "/" + orgData.id + "/"
       );
       if (response.status === 200) {
         const data = await response.json();
         setVehicleData(data);
         setisLoading(false);
-        // console.log(data);
       }
     } catch (error) {
       console.log(error);
@@ -116,16 +112,24 @@ const Dashboard = () => {
       if (response.status === 200) {
         const data = await response.json();
         setOrganizations(data);
-        fetchVehicleData();
+        setSelectedOrganization(data.results[0]);
+        await fetchVehicleData(data.results[0]);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
+  const fetchData = async () => {
+    try {
+      await fetchOrganizations();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    fetchOrganizations();
-    setSelectedOrganization(organizations.results[0]);
+    setisLoading(true);
+    fetchData();
   }, []);
 
   // console.log(vehicleData)
@@ -155,12 +159,11 @@ const Dashboard = () => {
             className="p-2"
             value={selectedOrganization.id}
             onChange={(e) => {
-              setSelectedOrganization(
-                organizations.results.find(
-                  (organization) => organization.id == e.target.value
-                )
+              const selectedOrg = organizations.results.find(
+                (organization) => organization.id == e.target.value
               );
-              fetchVehicleData();
+              setSelectedOrganization(selectedOrg);
+              fetchVehicleData(selectedOrg);
             }}
           >
             {organizations.results.map((organization) => (
