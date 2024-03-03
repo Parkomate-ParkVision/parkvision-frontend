@@ -3,6 +3,7 @@ export const baseURL = "http://127.0.0.1:8000";
 export const fastAPIURL = "http://127.0.0.1:8080";
 
 export const ApiConfig = {
+    register: `${baseURL}/register/`,
     login: `${baseURL}/login/`,
     logout: `${baseURL}/logout/`,
     organizations: `${baseURL}/organizations`,

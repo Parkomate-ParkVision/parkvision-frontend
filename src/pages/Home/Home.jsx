@@ -1,40 +1,14 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
+import styles from "./Home.module.css";
 import homeCarImage from "../../assets/homeCarImage.svg";
 import UpArrowIcon from "../../assets/UpArrowIcon.svg";
-import styles from "./Home.module.css";
-import Fetch from "../../utils/Fetch";
-import { ApiConfig } from "../../utils/config";
-import { toast } from "react-toastify";
+import RegisterPage from "../Register/RegisterPage";
+import LoginForm from "../../components/Login/Login";
 
 const Home = () => {
   const [firstPage, setFirstPage] = useState(true);
-  const [userType, setUserType] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-
-  const handleLogin = async ({ e }) => {
-    // console.log(email, password, userType);
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-    var response = await Fetch.post(ApiConfig.login, { email, password });
-    // // console.log(await response.json());
-    if (response.status === 200) {
-      response = await response.json();
-      console.log(response);
-      localStorage.setItem("accessToken", response.tokens.access);
-      localStorage.setItem("refreshToken", response.tokens.refresh);
-      localStorage.setItem("privilege", response.tokens.privilege);
-      window.location.href = "";
-      toast.success("Logged In Successfully");
-    } else {
-      toast.error("Invalid Credentials");
-    }
-  };
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -79,46 +53,23 @@ const Home = () => {
           </div>
           <div
             id="signintype"
-            className="h-screen w-full flex flex-col justify-center items-center gap-y-8"
+            className="h-screen w-[90%] flex flex-col justify-center items-center gap-y-8 mt-16"
           >
-            <div className="font-bold w-full text-2xl">Sign In as </div>
-            <div className="flex flex-row w-[90%] gap-x-8">
+            <div className="flex flex-col w-[40%] justify-center items-center gap-x-2 gap-y-4">
+              <div className="font-bold text-2xl">Register</div>
+              <RegisterPage />
+            </div>
+            <div className="font-bold text-2xl">OR</div>
+            <div className="flex flex-row justify-center w-[90%] gap-x-8 items-center justify-center">
               <a
                 href="#login"
-                className="flex flex-col w-[90%] items-center justify-center bg-white text-2xl font-bold italic w-full border border-gray p-4 rounded-lg cursor-pointer hover:bg-[#8DBF41] transition duration-300 ease-in-out"
+                className="flex flex-col w-[50%] items-center justify-center bg-white text-2xl font-bold italic w-[50%] border border-gray p-4 rounded-lg cursor-pointer hover:bg-[#8DBF41] transition duration-300 ease-in-out"
                 onClick={() => {
-                  setUserType("admin");
                   setFirstPage(false);
                 }}
               >
-                <div className="flex flex-col justify-center items-center">
-                  <img
-                    src="https://img.icons8.com/ios/50/000000/user.png"
-                    alt="User"
-                    className="w-12 h-12"
-                  />
-                  <div className="flex flex-row justify-center items-center">
-                    Admin
-                  </div>
-                </div>
-              </a>
-              <a
-                href="#login"
-                className="flex flex-col w-[90%] items-center justify-center bg-white text-2xl font-bold italic w-full border border-gray p-4 rounded-lg cursor-pointer hover:bg-[#8DBF41] transition duration-300 ease-in-out"
-                onClick={() => {
-                  setUserType("superadmin");
-                  setFirstPage(false);
-                }}
-              >
-                <div className="flex flex-col justify-center items-center">
-                  <img
-                    src="https://img.icons8.com/ios/50/000000/user.png"
-                    alt="User"
-                    className="w-12 h-12"
-                  />
-                  <div className="flex flex-row justify-center items-center">
-                    Super Admin
-                  </div>
+                <div className="font-bold w-50 text-lg">
+                  I already have an account!
                 </div>
               </a>
             </div>
@@ -128,43 +79,9 @@ const Home = () => {
             className="h-screen w-[40%] flex flex-col justify-center items-center gap-y-8"
           >
             <div className="flex flex-row justify-center items-center gap-x-2 font-bold w-full text-2xl">
-              Sign In as{" "}
-              <div className="text-[#8DBF41]">
-                {userType == "admin" ? "Admin" : "Super Admin"}
-              </div>
+              Sign In
             </div>
-            <div className="flex flex-col justify-center items-center w-full gap-y-4">
-              <form
-                action={handleLogin}
-                className="flex flex-col w-[90%] gap-y-4"
-              >
-                <input
-                  type="text"
-                  placeholder="example@example.com"
-                  className="w-full h-[3rem] px-4 py-2 border border-gray rounded-lg"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                  type="password"
-                  placeholder="********"
-                  className="w-full h-[3rem] px-4 py-2 border border-gray rounded-lg"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <div className="flex flex-row justify-center items-center w-full">
-                  <input
-                    type="submit"
-                    className="w-[50%] h-[3rem] bg-black text-[#8DBF41] font-bold px-4 py-2 rounded-lg border border-gray mt-4 hover:bg-[#8DBF41] hover:text-black transition duration-300 ease-in-out"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleLogin(e);
-                    }}
-                    value={"Sign In"}
-                  />
-                </div>
-              </form>
-            </div>
+            <LoginForm />
           </div>
         </div>
       </div>
