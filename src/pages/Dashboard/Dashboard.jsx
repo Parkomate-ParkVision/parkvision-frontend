@@ -148,6 +148,7 @@ console.log(arr)
       if (response.status === 200) {
         const data = await response.json();
         setVehicleData(data);
+        
         setisLoading(false);
       }
     } catch (error) {
@@ -188,12 +189,39 @@ console.log(arr)
   };
 
   const dayBefore = new Date().getTime() - (1 * 24 * 60 * 60 * 1000)
+  
+const today = new Date();
 
-  // console.log(vehicleData.filter(vehicle =>{
-  //   const entry = new Date(vehicle.entry_time)
-  //   const exit = new Date(vehicle.exit_time)
-  //   return !exit && entry < dayBefore
-  // }))
+// Subtract one day from the given date
+today.setDate(today.getDate() - 7);
+
+// Get yesterday's date in the local date format
+const lastWeekDate = today.toLocaleDateString();
+
+// console.log("Last week's date:", lastWeekDate);
+
+const lastWeekVehicles = vehicleData.filter(vehicle =>{
+  const entry = new Date(vehicle.entry_time)
+  return entry.toLocaleDateString() == lastWeekDate
+})
+console.log(lastWeekVehicles)
+
+const calcPeakHours = (vehicles) => {
+  let peakHours = new Array(24).fill(0);
+
+  vehicles.forEach(vehicle => {
+      const entry = new Date(vehicle.entry_time);
+      const exit = new Date(vehicle.exit_time);
+      
+      for (let i = entry.getUTCHours(); i <= exit.getUTCHours(); i++) {
+          peakHours[i]++;
+      }
+  });
+
+  console.log(peakHours)
+  return peakHours;
+};
+
 
   if (isloading) {
     return <div>Loading...</div>;
@@ -528,9 +556,8 @@ console.log(arr)
               <OverviewPeakHours
                 seriesData={[
                   {
-                    data: [
-                      5, 8, 10, 12, 15, 18, 20, 18, 15, 12, 10, 8, 7, 6, 5, 4,
-                    ],
+                    data: calcPeakHours(lastWeekVehicles),
+                    // data:[2,3,34,34]
                   },
                 ]}
                 sx={{
