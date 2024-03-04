@@ -25,6 +25,7 @@ import FrequencyHero from "../../components/FrequencyHero/FrequencyHero";
 import { useState, useEffect } from "react";
 import Fetch from "../../utils/Fetch";
 import { ApiConfig } from "../../utils/config";
+import data from '../../../vehicles.json'
 
 const now = new Date();
 
@@ -35,6 +36,55 @@ const Dashboard = () => {
     { value: "Monthly", label: "Monthly" },
   ];
 
+  const vehicleSegments = {
+    "TATA ALTROZ XZ 1.2 RTN BS6": "A",
+    "FORD FIGO 1.4 TDCI ZXI": "B",
+    "Volvo FH16 750": "C",
+    "Mercedes-Benz Actros 2646LS/33": "D",
+    "Honda Civic": "A",
+    "Honda City": "B",
+    "Hero Splendor Plus":"A", 
+    "Bajaj Pulsar 150" : "A"
+};
+
+const segmentCount = {
+  "A":0,
+  "B":0, 
+  "C":0,
+  "D":0
+}
+const vehiclesArray = data.vehicles;
+console.log(vehiclesArray)
+  for(const vehicle in vehicleSegments){
+    // console.log(vehicleSegments[vehicle])
+    vehiclesArray.forEach(ele =>{
+      if (vehicle.toLowerCase().includes(ele.result.extraction_output.manufacturer_model.toLowerCase())){
+        segmentCount[vehicleSegments[vehicle]]++
+        
+      }
+    })
+  }
+
+  for(const segment in segmentCount){
+    // console.log(segmentCount[segment])
+    console.log(segment, "", segmentCount[segment])
+  }
+ 
+
+  // console.log(data)
+  // data[1].forEach((vehicle) =>{
+  //   console.log(vehicle.result.manufacturer_model)
+  // })
+
+
+let arr = []
+vehiclesArray.forEach(vehicle => {
+    arr.push(vehicle.result.extraction_output.manufacturer_model);
+});
+console.log(arr)
+  // for(const vehicle in vehicles){
+  //   console.log(vehicle.result.manufacturer_model);
+  // }
   const [state, setState] = useState({ value: "Daily", label: "Daily" });
   const [selectedOrganization, setSelectedOrganization] = useState(null);
   const [organizations, setOrganizations] = useState([]);
@@ -74,9 +124,8 @@ const Dashboard = () => {
       return totalDuration;
     });
     const ParkingMinutes = totalDuration / vehicles.length;
-    return `${Math.floor(ParkingMinutes / 60)} Hours ${Math.floor(
-      ParkingMinutes % 60
-    )} Minutes`;
+    return isNaN(ParkingMinutes) ? '0' : `${Math.floor(ParkingMinutes / 60)} Hours ${Math.floor(ParkingMinutes % 60)} Minutes`;
+
   };
 
   const weeklyVehicleCount = (vehicles) => {
@@ -137,6 +186,14 @@ const Dashboard = () => {
     // console.log(option);
     setState(option);
   };
+
+  const dayBefore = new Date().getTime() - (1 * 24 * 60 * 60 * 1000)
+
+  // console.log(vehicleData.filter(vehicle =>{
+  //   const entry = new Date(vehicle.entry_time)
+  //   const exit = new Date(vehicle.exit_time)
+  //   return !exit && entry < dayBefore
+  // }))
 
   if (isloading) {
     return <div>Loading...</div>;
@@ -224,7 +281,8 @@ const Dashboard = () => {
                       //   const entry  = new Date(vehicle.entry_time)
                       //   return entry.getFullYear() == now.getFullYear() && entry.getMonth() == now.getMonth()-1
                       // }).length)/100
-                      0
+                      // 0
+                      ' '
                     }
                     state={state}
                     positive
@@ -261,7 +319,7 @@ const Dashboard = () => {
               <Slide direction="down" in={true} mountOnEnter unmountOnExit>
                 <div>
                   <OverviewExits
-                    difference={16}
+                    difference={' '}
                     state={state}
                     positive={false}
                     sx={{ height: "100%", borderRadius: "15px" }}
@@ -293,7 +351,7 @@ const Dashboard = () => {
                 <div>
                   <OverviewOccupancy
                     sx={{ height: "100%", borderRadius: "15px" }}
-                    value={75.5}
+                    value={Math.floor(selectedOrganization.filled_slots/selectedOrganization.total_slots*100)}
                   />
                 </div>
               </Slide>
@@ -302,7 +360,7 @@ const Dashboard = () => {
               <Slide direction="left" in={true} mountOnEnter unmountOnExit>
                 <div>
                   <OverviewAverageOccupancy
-                    difference={11}
+                    difference={' '}
                     positive
                     sx={{ height: "100%", borderRadius: "15px" }}
                     value={
@@ -364,7 +422,11 @@ const Dashboard = () => {
             </Grid>
             <Grid xs={12} md={6} lg={4}>
               <OverviewTraffic
-                chartSeries={[63, 15]}
+                chartSeries={[vehiclesArray.filter(vehicle =>{
+                  return vehicle.result.extraction_output.vehicle_class.includes('MCWG')
+                }).length, vehiclesArray.filter(vehicle =>{
+                  return !vehicle.result.extraction_output.vehicle_class.includes('MCWG')
+                }).length]}
                 labels={["Cars", "Two-wheelers"]}
                 sx={{ height: "100%", borderRadius: "15px" }}
               />
@@ -445,13 +507,14 @@ const Dashboard = () => {
                 </Grid>
               </Card>
             </Grid>
-            <Grid xs={12} md={9} lg={7}>
+            <Grid xs={12} md={9} lg={7}>    
               <OverviewVehicleClassification
                 sx={{ borderRadius: "15px", paddingLeft: "1rem" }}
+                
                 data={[
-                  { value: 50, label: "Economy Vehicles" },
-                  { value: 23, label: "Mid-range vehicles" },
-                  { value: 7, label: "Premium Vehicles" },
+                  { value: segmentCount["A"], label: "Economy Vehicles" },
+                  { value: segmentCount["B"]+segmentCount["C"], label: "Mid-range vehicles" },
+                  { value: segmentCount["D"], label: "Premium Vehicles" },
                 ]}
               />
             </Grid>
@@ -478,28 +541,35 @@ const Dashboard = () => {
                 }}
               />
             </Grid>
+            
             <Grid xs={12} md={9} lg={6}>
               <OverviewOverstayed
-                products={[
-                  {
-                    id: "5ece2c077e39da27658aa8a9",
-                    name: "MH 12 GK 1234",
-                    wheels: 2,
-                    updatedAt: subHours(now, 25).getTime(),
-                  },
-                  {
-                    id: "5ece2c0d16f70bff2cf86cd8",
-                    name: "MH 14 GR 1274",
-                    wheels: 4,
-                    updatedAt: subHours(now, 30).getTime(),
-                  },
-                  {
-                    id: "b393ce1b09c1254c3a92c827",
-                    name: "MH 12 JK 1232",
-                    wheels: 2,
-                    updatedAt: subHours(now, 75).getTime(),
-                  },
-                ]}
+                vehicles={
+                  vehicleData.filter(vehicle =>{
+                    const entry = new Date(vehicle.entry_time)
+                    const exit = new Date(vehicle.exit_time)
+                    return !exit && entry < dayBefore
+                  })
+                }
+                //   {
+                //     id: "5ece2c077e39da27658aa8a9",
+                //     name: "MH 12 GK 1234",
+                //     wheels: 2,
+                //     updatedAt: subHours(now, 25).getTime(),
+                //   },
+                //   {
+                //     id: "5ece2c0d16f70bff2cf86cd8",
+                //     name: "MH 14 GR 1274",
+                //     wheels: 4,
+                //     updatedAt: subHours(now, 30).getTime(),
+                //   },
+                //   {
+                //     id: "b393ce1b09c1254c3a92c827",
+                //     name: "MH 12 JK 1232",
+                //     wheels: 2,
+                //     updatedAt: subHours(now, 75).getTime(),
+                //   },
+                // ]}
                 sx={{
                   paddingLeft: "1rem",
                   height: "auto",

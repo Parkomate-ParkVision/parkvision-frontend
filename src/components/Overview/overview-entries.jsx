@@ -53,19 +53,19 @@ export const OverviewEntries = (props) => {
               spacing={0.5}
             >
               <SvgIcon
-                color={positive ? 'success' : 'error'}
+                color={difference>0 ? 'success' : 'error'}
                 fontSize="small"
               >
-                {positive ? <ArrowUpIcon /> : <ArrowDownIcon />}
+                {/* {difference>0  ? <ArrowUpIcon /> : <ArrowDownIcon />} */}
               </SvgIcon>
-              <Typography
-                color={positive ? 'success.main' : 'error.main'}
+              {/* <Typography
+                color={difference>0 ? 'success.main' : 'error.main'}
                 variant="body2"
-              >
-                {difference}%
-              </Typography>
+              > */}
+                {difference}
+              {/* </Typography> */}
             </Stack>
-            <Typography
+            {/* <Typography
               color="text.secondary"
               variant="caption"
             >
@@ -75,7 +75,7 @@ export const OverviewEntries = (props) => {
                  state.value === 'Monthly' ? 'month' :''
                  
               }
-            </Typography>
+            </Typography> */}
           </Stack>
         )}
       </CardContent>

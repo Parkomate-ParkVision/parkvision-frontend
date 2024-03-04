@@ -56,16 +56,16 @@ export const OverviewExits = (props) => {
                 color={positive ? 'success' : 'error'}
                 fontSize="small"
               >
-                {positive ? <ArrowUpIcon /> : <ArrowDownIcon />}
+                {/* {positive ? <ArrowUpIcon /> : <ArrowDownIcon />} */}
               </SvgIcon>
               <Typography
                 color={positive ? 'success.main' : 'error.main'}
                 variant="body2"
               >
-                {difference}%
+                {difference}
               </Typography>
             </Stack>
-            <Typography
+            {/* <Typography
               color="text.secondary"
               variant="caption"
             >
@@ -74,7 +74,7 @@ export const OverviewExits = (props) => {
                   state.value === 'Weekly' ? 'week' :
                   state.value === 'Monthly' ? 'month' :''
               }
-            </Typography>
+            </Typography> */}
           </Stack>
         )}
       </CardContent>
