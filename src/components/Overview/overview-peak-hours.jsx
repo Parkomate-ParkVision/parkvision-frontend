@@ -17,7 +17,7 @@ export default function OverviewPeakHours(props) {
           xAxis={[
             {
               label:'Hours',
-              data: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+              data: [...Array(24).keys()],
               axisLabel: {
                 formatter: (value) => (`${value}AM`),
               },

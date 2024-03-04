@@ -124,7 +124,7 @@ export const OverviewTraffic = (props) => {
                   color="text.secondary"
                   variant="subtitle2"
                 >
-                  {item}%
+                  {item}
                 </Typography>
               </Box>
             );

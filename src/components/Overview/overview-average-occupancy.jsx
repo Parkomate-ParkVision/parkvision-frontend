@@ -57,21 +57,21 @@ export const OverviewAverageOccupancy = (props) => {
             color={positive ? 'success' : 'error'}
             fontSize="small"
           >
-          {positive ? <ArrowUpIcon /> : <ArrowDownIcon />}
+          {/* {positive ? <ArrowUpIcon /> : <ArrowDownIcon />} */}
           </SvgIcon>
           <Typography
             color={positive ? 'success.main' : 'error.main'}
             variant="body2"
           >
-            {difference}%
+            {difference}
           </Typography>
         </Stack>
-        <Typography
+        {/* <Typography
           color="text.secondary"
           variant="caption"
         >
           Since last week
-        </Typography>
+        </Typography> */}
         </Stack>
         )}
       </CardContent>

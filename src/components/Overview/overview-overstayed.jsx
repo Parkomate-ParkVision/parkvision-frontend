@@ -7,18 +7,18 @@ import { Avatar, Card, CardContent,ListItemText ,IconButton , CardHeader,ListIte
 // import { RiMotorbikeFill } from 'react-icons/ri';
 
 export const OverviewOverstayed = (props) => {
-  const { products = [], sx } = props;
+  const { vehicles = [], sx } = props;
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     // Automatically slide every 5 seconds
     const intervalId = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % products.length);
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % vehicles.length);
     }, 2000);
 
     // Clear the interval on component unmount
     return () => clearInterval(intervalId);
-  }, [products.length]);
+  }, [vehicles.length]);
 
   return (
     <Card sx={sx}>
@@ -37,9 +37,9 @@ export const OverviewOverstayed = (props) => {
               transform: `translateX(-${currentIndex * 100}%)`,
             }}
           >
-            {products.map((product, index) => {
-              const hasDivider = index < products.length - 1;
-              const ago = formatDistanceToNow(product.updatedAt);
+            {vehicles.map((vehicle, index) => {
+              const hasDivider = index < vehicles.length - 1;
+              const ago = formatDistanceToNow(vehicle.entry_time.subHours(now, 25).getTime());
 
               return (
                 <ListItem
