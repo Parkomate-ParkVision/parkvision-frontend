@@ -12,6 +12,7 @@ import CCTVPage from "./pages/CCTV/CCTVPage";
 import CustomerSegmentation from "./pages/Customer-Segmentation/CustomerSegmentation";
 import GatePage from "./pages/Gates/GatePage";
 import LoginPage from "./pages/Login/Login";
+import DashboardCopy from "./pages/Dashboard/DashboardCopy";
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ export const authRouter = createBrowserRouter([
       {
         path: "/",
         element: <Dashboard />,
+      },
+      {
+        path: "/copy",
+        element: <DashboardCopy />,
       },
       {
         path: "parkings",

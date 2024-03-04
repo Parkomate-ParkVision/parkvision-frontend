@@ -108,7 +108,7 @@ const ParkingPage = () => {
     },
     ,
     { field: "organizationName", headerName: "Organization Name", flex: 1 },
-    { field: "name", headerName: "totalSlots", flex: 1 },
+    { field: "name", headerName: "Name", flex: 1 },
     { field: "totalSlots", headerName: "Total Slots", flex: 1 },
     { field: "availableSlots", headerName: "Available Slots", flex: 1 },
     {

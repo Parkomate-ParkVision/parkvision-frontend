@@ -37,8 +37,8 @@ const Dashboard = () => {
 
   const [state, setState] = useState({ value: "Daily", label: "Daily" });
   const [selectedOrganization, setSelectedOrganization] = useState(null);
-  const [organizations, setOrganizations] = useState([]);
-  const [vehicleData, setVehicleData] = useState(null);
+  const [organizations, setOrganizations] = useState({ results: [] });
+  const [vehicleData, setVehicleData] = useState([]);
 
   function dayDifference(date1, date2) {
     // Convert both dates to UTC to ensure consistent calculations
@@ -98,7 +98,23 @@ const Dashboard = () => {
       );
       if (response.status === 200) {
         const data = await response.json();
+        console.log(data);
         setVehicleData(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchDashBoardData = async (orgData) => {
+    try {
+      const response = await Fetch.get(
+        ApiConfig.dashboard + "/" + orgData.id + "/"
+      );
+      if (response.status === 200) {
+        const data = await response.json();
+        setDashBoardData(data);
+        console.log(data);
         setisLoading(false);
       }
     } catch (error) {
@@ -106,30 +122,27 @@ const Dashboard = () => {
     }
   };
 
-  const fetchOrganizations = async () => {
-    try {
-      const response = await Fetch.get(ApiConfig.organizations);
-      if (response.status === 200) {
-        const data = await response.json();
-        setOrganizations(data);
-        setSelectedOrganization(data.results[0]);
-        await fetchVehicleData(data.results[0]);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  const fetchOrganizations = () => {
+    axios
+      .get(ApiConfig.organizations, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        setOrganizations(response.data);
+        setSelectedOrganization(response.data.results[0]);
+        fetchVehicleData(response.data.results[0]);
+        fetchDashBoardData(response.data.results[0]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  const fetchData = async () => {
-    try {
-      await fetchOrganizations();
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
     setisLoading(true);
-    fetchData();
+    fetchOrganizations();
   }, []);
 
   // console.log(vehicleData)
@@ -157,7 +170,7 @@ const Dashboard = () => {
             name="Organization"
             id="organization"
             className="p-2"
-            value={selectedOrganization.id}
+            value={selectedOrganization && selectedOrganization.id}
             onChange={(e) => {
               const selectedOrg = organizations.results.find(
                 (organization) => organization.id == e.target.value
