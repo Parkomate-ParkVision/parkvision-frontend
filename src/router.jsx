@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import Login from "./pages/Login/Login";
 import PageNotFound from "./pages/PageNotFound/PageNotFound";
 import NavBar from "./components/Navbar/Navbar";
 import Dashboard from "./pages/Dashboard/Dashboard";
@@ -12,6 +11,7 @@ import IndividualOrganizationPage from "./pages/Organization/IndividualOrganizat
 import CCTVPage from "./pages/CCTV/CCTVPage";
 import CustomerSegmentation from "./pages/Customer-Segmentation/CustomerSegmentation";
 import GatePage from "./pages/Gates/GatePage";
+import LoginPage from "./pages/Login/Login";
 
 export const router = createBrowserRouter([
   {
@@ -20,7 +20,7 @@ export const router = createBrowserRouter([
   },
   {
     path: "login",
-    element: <Login />,
+    element: <LoginPage />,
   },
   {
     path: "*",
@@ -69,7 +69,6 @@ export const authRouter = createBrowserRouter([
         path: "customer-segmentation",
         element: <CustomerSegmentation />,
       },
-      
     ],
   },
   {

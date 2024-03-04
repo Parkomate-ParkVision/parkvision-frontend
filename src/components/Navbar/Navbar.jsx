@@ -61,6 +61,7 @@ const NavBar = () => {
       window.location.href = "/";
       toast.success("Logged Out Successfully");
     } else {
+      localStorage.clear();
       toast.error("Error Logging Out");
     }
   };
