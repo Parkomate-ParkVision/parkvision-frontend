@@ -92,6 +92,7 @@ const Dashboard = () => {
   const [selectedOrganization, setSelectedOrganization] = useState(null);
   const [organizations, setOrganizations] = useState({ results: [] });
   const [vehicleData, setVehicleData] = useState([]);
+  const [dashBoardData, setDashBoardData] = useState({});
 
   function dayDifference(date1, date2) {
     // Convert both dates to UTC to ensure consistent calculations
