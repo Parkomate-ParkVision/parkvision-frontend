@@ -6,7 +6,7 @@ import {
   Unstable_Grid2 as Grid,
 } from "@mui/material";
 import Slide from "@mui/material/Slide";
-
+import axios from 'axios'
 import { OverviewEntries } from "../../components/Overview/overview-entries";
 import { OverviewExits } from "../../components/Overview/overview-exits";
 import { OverviewOccupancy } from "../../components/Overview/overview-occupancy";
@@ -54,7 +54,7 @@ const Dashboard = () => {
     D: 0,
   };
   const vehiclesArray = data.vehicles;
-  console.log(vehiclesArray);
+  // console.log(vehiclesArray);
   for (const vehicle in vehicleSegments) {
     // console.log(vehicleSegments[vehicle])
     vehiclesArray.forEach((ele) => {
@@ -72,7 +72,7 @@ const Dashboard = () => {
 
   for (const segment in segmentCount) {
     // console.log(segmentCount[segment])
-    console.log(segment, "", segmentCount[segment]);
+    // console.log(segment, "", segmentCount[segment]);
   }
 
   // console.log(data)
@@ -84,7 +84,7 @@ const Dashboard = () => {
   vehiclesArray.forEach((vehicle) => {
     arr.push(vehicle.result.extraction_output.manufacturer_model);
   });
-  console.log(arr);
+  // console.log(arr);
   // for(const vehicle in vehicles){
   //   console.log(vehicle.result.manufacturer_model);
   // }
@@ -171,8 +171,9 @@ const Dashboard = () => {
       );
       if (response.status === 200) {
         const data = await response.json();
-        setDashBoardData(data);
         console.log(data);
+        setDashBoardData(data);
+        
         setisLoading(false);
       }
     } catch (error) {
@@ -225,7 +226,7 @@ const Dashboard = () => {
     const entry = new Date(vehicle.entry_time);
     return entry.toLocaleDateString() == lastWeekDate;
   });
-  console.log(lastWeekVehicles);
+  // console.log(lastWeekVehicles);
 
   const calcPeakHours = (vehicles) => {
     let peakHours = new Array(24).fill(0);
@@ -239,7 +240,7 @@ const Dashboard = () => {
       }
     });
 
-    console.log(peakHours);
+    // console.log(peakHours);
     return peakHours;
   };
 
@@ -269,6 +270,7 @@ const Dashboard = () => {
               );
               setSelectedOrganization(selectedOrg);
               fetchVehicleData(selectedOrg);
+              fetchDashBoardData(selectedOrg)
             }}
           >
             {organizations.results.map((organization) => (
@@ -304,32 +306,7 @@ const Dashboard = () => {
                 <div>
                   <OverviewEntries
                     difference={
-                      // state.value == 'Daily' ?
-                      // (vehicleData.filter((vehicle) => {
-                      //   const entry  = new Date(vehicle.entry_time)
-                      //   return entry.toDateString() == now.toDateString()
-                      // }).length - vehicleData.filter((vehicle) => {
-                      //   const entry  = new Date(vehicle.entry_time)
-                      //   const yesterday = now;
-                      //   yesterday.setDate(now.getDate() - 1);
-                      //   return entry.toDateString() == yesterday.toDateString()
-                      // }).length)/100 :
-                      // state.value == 'Weekly' ?
-                      // (vehicleData.filter((vehicle) => {
-                      //   const entry  = new Date(vehicle.entry_time)
-                      //   return dayDifference(now, entry) <= 7
-                      // }).length - vehicleData.filter((vehicle) => {
-                      //   const entry  = new Date(vehicle.entry_time)
-                      //   return dayDifference(now, entry) > 7 && dayDifference(now, entry) <=14
-                      // }).length)/100:
-                      // (vehicleData.filter((vehicle) => {
-                      //   const entry  = new Date(vehicle.entry_time)
-                      //   return entry.getFullYear() == now.getFullYear() && entry.getMonth() == now.getMonth()
-                      // }).length - vehicleData.filter((vehicle) => {
-                      //   const entry  = new Date(vehicle.entry_time)
-                      //   return entry.getFullYear() == now.getFullYear() && entry.getMonth() == now.getMonth()-1
-                      // }).length)/100
-                      // 0
+                      
                       " "
                     }
                     state={state}
@@ -506,7 +483,7 @@ const Dashboard = () => {
                   spacing={{ xs: 2, md: 3 }}
                   columns={{ xs: 4, sm: 8, md: 12 }}
                 >
-                  {Array.from(Array(15)).map((_, index) => (
+                  {Array.from(Array(27)).map((_, index) => (
                     <Grid item xs={2} sm={4} md={4} key={index}>
                       {index % 4 === 0 && (
                         <Card
@@ -570,18 +547,18 @@ const Dashboard = () => {
               <OverviewVehicleClassification
                 sx={{ borderRadius: "15px", paddingLeft: "1rem" }}
                 data={[
-                  { value: segmentCount["A"], label: "Economy Vehicles" },
+                  { value: dashBoardData.vehicle_types[0]['count'], label: "Economy Vehicles" },
                   {
-                    value: segmentCount["B"] + segmentCount["C"],
+                    value: dashBoardData.vehicle_types[1]['count'],
                     label: "Mid-range vehicles",
                   },
-                  { value: segmentCount["D"], label: "Premium Vehicles" },
+                  { value: dashBoardData.vehicle_types[2]['count'], label: "Premium Vehicles" },
                 ]}
               />
             </Grid>
             <Grid xs={12} md={9} lg={5}>
               <ParkingTimes
-                seriesData={[{ data: [2, 3, 5] }]}
+                seriesData={[{ data: [dashBoardData.average_occupancy_by_vehicle_type['economy'], dashBoardData.average_occupancy_by_vehicle_type['midrange'], dashBoardData.average_occupancy_by_vehicle_type['premium']] }]}
                 sx={{ paddingLeft: "1rem", borderRadius: "15px" }}
               />
             </Grid>
