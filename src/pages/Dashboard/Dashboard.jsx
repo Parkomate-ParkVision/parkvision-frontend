@@ -130,9 +130,9 @@ const Dashboard = () => {
     const ParkingMinutes = totalDuration / vehicles.length;
     return isNaN(ParkingMinutes)
       ? "0"
-      : `${Math.floor(ParkingMinutes / 60)} Hours ${Math.floor(
+      : `${Math.floor(ParkingMinutes / 6000 )} Hrs ${Math.floor(
           ParkingMinutes % 60
-        )} Minutes`;
+        )} Mins`;
   };
 
   const weeklyVehicleCount = (vehicles) => {
@@ -183,16 +183,16 @@ const Dashboard = () => {
 
   const fetchOrganizations = () => {
     axios
-      .get(ApiConfig.organizations, {
+      .get(ApiConfig.organizationNoPagination, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
       .then((response) => {
         setOrganizations(response.data);
-        setSelectedOrganization(response.data.results[0]);
-        fetchVehicleData(response.data.results[0]);
-        fetchDashBoardData(response.data.results[0]);
+        setSelectedOrganization(response.data[0]);
+        fetchVehicleData(response.data[0]);
+        fetchDashBoardData(response.data[0]);
       })
       .catch((error) => {
         console.log(error);
@@ -265,7 +265,7 @@ const Dashboard = () => {
             className="p-2"
             value={selectedOrganization && selectedOrganization.id}
             onChange={(e) => {
-              const selectedOrg = organizations.results.find(
+              const selectedOrg = organizations.find(
                 (organization) => organization.id == e.target.value
               );
               setSelectedOrganization(selectedOrg);
@@ -273,7 +273,7 @@ const Dashboard = () => {
               fetchDashBoardData(selectedOrg)
             }}
           >
-            {organizations.results.map((organization) => (
+            {organizations.map((organization) => (
               <option value={organization.id} key={organization.id}>
                 {organization.name}
               </option>
@@ -325,10 +325,11 @@ const Dashboard = () => {
                           }).length
                         : vehicleData.filter((vehicle) => {
                             const entry = new Date(vehicle.entry_time);
-                            return (
-                              entry.getFullYear() == now.getFullYear() &&
-                              entry.getMonth() == now.getMonth()
-                            );
+                            // return (
+                            //   entry.getFullYear() == now.getFullYear() &&
+                            //   entry.getMonth() == now.getMonth()
+                            // );
+                            return dayDifference(now, entry) <= 30;
                           }).length
                     }
                   />
@@ -361,10 +362,11 @@ const Dashboard = () => {
                           }).length
                         : vehicleData.filter((vehicle) => {
                             const exit = new Date(vehicle.exit_time);
-                            return (
-                              exit.getFullYear() == now.getFullYear() &&
-                              exit.getMonth() == now.getMonth()
-                            );
+                            // return (
+                            //   exit.getFullYear() == now.getFullYear() &&
+                            //   exit.getMonth() == now.getMonth()
+                            // );
+                            return dayDifference(now, exit) <= 30;
                           }).length
                     }
                   />
@@ -410,10 +412,11 @@ const Dashboard = () => {
                         : calcAvgParking(
                             vehicleData.filter((vehicle) => {
                               const exit = new Date(vehicle.exit_time);
-                              return (
-                                exit.getFullYear() == now.getFullYear() &&
-                                exit.getMonth() == now.getMonth()
-                              );
+                              // return (
+                              //   exit.getFullYear() == now.getFullYear() &&
+                              //   exit.getMonth() == now.getMonth()
+                              // );
+                              return dayDifference(now, exit) <= 30;
                             })
                           )
                     }

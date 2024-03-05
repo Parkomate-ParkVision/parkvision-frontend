@@ -33,6 +33,7 @@ export const OverviewLatestArrivals = (props) => {
           const ago = formatDistanceToNow(entry);
           const numberPlate = vehicle.number_plate;
           return (
+            index<10? 
             <ListItem
               divider={hasDivider}
               key={vehicle.id}
@@ -52,7 +53,7 @@ export const OverviewLatestArrivals = (props) => {
                 </SvgIcon>
               </IconButton> */}
             </ListItem>
-          );
+          :null);
         })}
       </List>
       {/* <Divider />

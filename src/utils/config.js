@@ -7,6 +7,7 @@ export const ApiConfig = {
     login: `${baseURL}/login/`,
     logout: `${baseURL}/logout/`,
     organizations: `${baseURL}/organizations`,
+    organizationNoPagination: `${baseURL}/organizations-no-pagination`,
     dashboard: `${baseURL}/dashboard`,
     parkings: `${baseURL}/parkings`,
     cctvs: `${baseURL}/cctvs`,
