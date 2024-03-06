@@ -139,7 +139,7 @@ const NavBar = () => {
             >
               Gates
             </NavLink>
-            {privilege < 1 && (
+            {/* {privilege < 1 && (
               <NavLink
                 to="/billing"
                 className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
@@ -150,7 +150,7 @@ const NavBar = () => {
               >
                 Billing
               </NavLink>
-            )}
+            )} */}
             {privilege < 1 && (
               <NavLink
                 to="/customer-segmentation"

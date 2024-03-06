@@ -19,7 +19,7 @@ const IndividualOrganizationPage = () => {
     try {
       console.log(newAdmin);
       const response = await Fetch.post(ApiConfig.admins + "/", newAdmin);
-      if (response.status === 200) {
+      if (response.status === 201) {
         console.log(await response.json());
         toast.success("Admin added successfully");
         setShowModal(false);

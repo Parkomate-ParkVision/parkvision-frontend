@@ -6,7 +6,7 @@ import {
   Unstable_Grid2 as Grid,
 } from "@mui/material";
 import Slide from "@mui/material/Slide";
-import axios from 'axios'
+import axios from "axios";
 import { OverviewEntries } from "../../components/Overview/overview-entries";
 import { OverviewExits } from "../../components/Overview/overview-exits";
 import { OverviewOccupancy } from "../../components/Overview/overview-occupancy";
@@ -130,7 +130,7 @@ const Dashboard = () => {
     const ParkingMinutes = totalDuration / vehicles.length;
     return isNaN(ParkingMinutes)
       ? "0"
-      : `${Math.floor(ParkingMinutes / 6000 )} Hrs ${Math.floor(
+      : `${Math.floor(ParkingMinutes / 6000)} Hrs ${Math.floor(
           ParkingMinutes % 60
         )} Mins`;
   };
@@ -156,8 +156,6 @@ const Dashboard = () => {
         const data = await response.json();
         console.log(data);
         setVehicleData(data);
-
-        setisLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -173,7 +171,7 @@ const Dashboard = () => {
         const data = await response.json();
         console.log(data);
         setDashBoardData(data);
-        
+
         setisLoading(false);
       }
     } catch (error) {
@@ -247,7 +245,7 @@ const Dashboard = () => {
   if (isloading) {
     return <div>Loading...</div>;
   }
-  return (
+  return organizations.length > 0 ? (
     <>
       <Box
         component="main"
@@ -270,7 +268,7 @@ const Dashboard = () => {
               );
               setSelectedOrganization(selectedOrg);
               fetchVehicleData(selectedOrg);
-              fetchDashBoardData(selectedOrg)
+              fetchDashBoardData(selectedOrg);
             }}
           >
             {organizations.map((organization) => (
@@ -305,10 +303,7 @@ const Dashboard = () => {
               <Slide direction="right" in={true} mountOnEnter unmountOnExit>
                 <div>
                   <OverviewEntries
-                    difference={
-                      
-                      " "
-                    }
+                    difference={" "}
                     state={state}
                     positive
                     sx={{ height: "100%", borderRadius: "15px" }}
@@ -550,18 +545,38 @@ const Dashboard = () => {
               <OverviewVehicleClassification
                 sx={{ borderRadius: "15px", paddingLeft: "1rem" }}
                 data={[
-                  { value: dashBoardData.vehicle_types[0]['count'], label: "Economy Vehicles" },
                   {
-                    value: dashBoardData.vehicle_types[1]['count'],
+                    value: dashBoardData.vehicle_types[0]["count"],
+                    label: "Economy Vehicles",
+                  },
+                  {
+                    value: dashBoardData.vehicle_types[1]["count"],
                     label: "Mid-range vehicles",
                   },
-                  { value: dashBoardData.vehicle_types[2]['count'], label: "Premium Vehicles" },
+                  {
+                    value: dashBoardData.vehicle_types[2]["count"],
+                    label: "Premium Vehicles",
+                  },
                 ]}
               />
             </Grid>
             <Grid xs={12} md={9} lg={5}>
               <ParkingTimes
-                seriesData={[{ data: [dashBoardData.average_occupancy_by_vehicle_type['economy'], dashBoardData.average_occupancy_by_vehicle_type['midrange'], dashBoardData.average_occupancy_by_vehicle_type['premium']] }]}
+                seriesData={[
+                  {
+                    data: [
+                      dashBoardData.average_occupancy_by_vehicle_type[
+                        "economy"
+                      ],
+                      dashBoardData.average_occupancy_by_vehicle_type[
+                        "midrange"
+                      ],
+                      dashBoardData.average_occupancy_by_vehicle_type[
+                        "premium"
+                      ],
+                    ],
+                  },
+                ]}
                 sx={{ paddingLeft: "1rem", borderRadius: "15px" }}
               />
             </Grid>
@@ -632,6 +647,8 @@ const Dashboard = () => {
         </Container>
       </Box>
     </>
+  ) : (
+    <div>Add Organizations to get started.</div>
   );
 };
 
