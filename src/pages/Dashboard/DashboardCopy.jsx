@@ -19,6 +19,8 @@ import { OverviewCarsParked } from "../../components/Overview/overview-cars-park
 import { BarChart } from "@mui/x-charts/BarChart";
 import { OverviewTraffic } from "../../components/Overview/overview-traffic";
 import { OverviewAverageOccupancy } from "../../components/Overview/overview-average-occupancy";
+import GeneralStatistics from "../../components/Analytics/GeneralStats/GeneralStatistics";
+import VisitorAnalyticsPage from "../../components/Analytics/VisitorAnalytics/VisitorAnalyticsPage";
 
 const now = new Date();
 
@@ -59,8 +61,9 @@ const DashboardCopy = () => {
       );
       if (response.status === 200) {
         const data = await response.json();
-        setDashBoardData(data);
         console.log(data);
+        setDashBoardData(data);
+
         setisLoading(false);
       }
     } catch (error) {
@@ -70,16 +73,16 @@ const DashboardCopy = () => {
 
   const fetchOrganizations = () => {
     axios
-      .get(ApiConfig.organizations, {
+      .get(ApiConfig.organizationNoPagination, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       })
       .then((response) => {
         setOrganizations(response.data);
-        setSelectedOrganization(response.data.results[0]);
-        fetchVehicleData(response.data.results[0]);
-        fetchDashBoardData(response.data.results[0]);
+        setSelectedOrganization(response.data[0]);
+        fetchVehicleData(response.data[0]);
+        fetchDashBoardData(response.data[0]);
       })
       .catch((error) => {
         console.log(error);
@@ -104,154 +107,49 @@ const DashboardCopy = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          py: 2,
         }}
-        className="w-full h-full bg-[#f4f2ed] flex flex-col items-center justify-center"
+        className="w-full h-full bg-white flex flex-col items-center justify-center gap-y-8"
       >
-        <div className="flex flex-row items-center justify-center mb-8 w-full h-20 bg-[#f4f2ed]">
-          <h1 className="mr-4">Organization: </h1>
-          <select
-            name="Organization"
-            id="organization"
-            className="p-2"
-            value={selectedOrganization && selectedOrganization.id}
-            onChange={(e) => {
-              const selectedOrg = organizations.results.find(
-                (organization) => organization.id == e.target.value
-              );
-              setSelectedOrganization(selectedOrg);
-              fetchVehicleData(selectedOrg);
-              fetchDashBoardData(selectedOrg);
-            }}
-          >
-            {organizations.results.map((organization) => (
-              <option value={organization.id} key={organization.id}>
-                {organization.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <Container maxWidth="xl">
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "80px",
-              marginTop: "-50px",
-              marginBottom: "30px",
-            }}
-          >
-            <div className="flex flex-row items-center justify-between align-middle p-2 w-[50%] h-full">
+        <div className="flex flex-row items-evenly justify-center w-full h-20 bg-[#f4f2ed] max-md:flex-col border border-gray">
+          <div className="w-[33%] flex flex-row items-center justify-center gap-x-8">
+            <h1>Organization: </h1>
+            <select
+              name="Organization"
+              id="organization"
+              className="p-4"
+              value={selectedOrganization && selectedOrganization.id}
+              onChange={(e) => {
+                const selectedOrg = organizations.find(
+                  (organization) => organization.id == e.target.value
+                );
+                setSelectedOrganization(selectedOrg);
+                fetchVehicleData(selectedOrg);
+                fetchDashBoardData(selectedOrg);
+              }}
+            >
+              {organizations.map((organization) => (
+                <option value={organization.id} key={organization.id}>
+                  {organization.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="w-[66%] flex flex-row items-center justify-evenly">
+            <h1>Frequency: </h1>
+            <div className="flex flex-row items-evenly justify-between align-middle p-2 w-full h-full">
               <FrequencyHero
                 options={options}
                 selectedOption={state}
                 handleChange={handleStateChange}
               />
             </div>
-          </Box>
-
-          <Grid container spacing={3}>
-            <Grid xs={12} sm={6} lg={3}>
-              <Slide direction="right" in={true} mountOnEnter unmountOnExit>
-                <div>
-                  <OverviewEntries
-                    difference={16}
-                    state={state}
-                    positive
-                    sx={{ height: "100%", borderRadius: "15px" }}
-                    value={
-                      state.value === "Daily"
-                        ? dashBoardData.daily_entries
-                        : state.value === "Weekly"
-                        ? dashBoardData.weekly_entries
-                        : dashBoardData.monthly_entries
-                    }
-                  />
-                </div>
-              </Slide>
-            </Grid>
-            <Grid xs={12} sm={6} lg={3}>
-              <Slide direction="down" in={true} mountOnEnter unmountOnExit>
-                <div>
-                  <OverviewExits
-                    difference={16}
-                    state={state}
-                    positive={false}
-                    sx={{ height: "100%", borderRadius: "15px" }}
-                    value={
-                      state.value === "Daily"
-                        ? dashBoardData.daily_exits
-                        : state.value === "Weekly"
-                        ? dashBoardData.weekly_exits
-                        : dashBoardData.monthly_exits
-                    }
-                  />
-                </div>
-              </Slide>
-            </Grid>
-            <Grid xs={12} sm={6} lg={3}>
-              <Slide direction="down" in={true} mountOnEnter unmountOnExit>
-                <div>
-                  <OverviewOccupancy
-                    sx={{ height: "100%", borderRadius: "15px" }}
-                    value={dashBoardData.percentage_occupied.toFixed(2)}
-                  />
-                </div>
-              </Slide>
-            </Grid>
-            <Grid xs={12} sm={6} lg={3}>
-              <Slide direction="left" in={true} mountOnEnter unmountOnExit>
-                <div>
-                  <OverviewAverageOccupancy
-                    difference={11}
-                    positive
-                    sx={{ height: "100%", borderRadius: "15px" }}
-                    value={dashBoardData.average_occupancy.toFixed(2)}
-                  />
-                </div>
-              </Slide>
-            </Grid>
-          </Grid>
-          <Grid container spacing={3}>
-            <Grid xs={12} md={6} lg={4}>
-              <Card sx={{ height: "100%", borderRadius: "15px" }}>
-                <CardHeader title="Cars Parked" />
-                <BarChart
-                  xAxis={[
-                    {
-                      scaleType: "band",
-                      data: [
-                        "Sunday",
-                        "Monday",
-                        "Tuesday",
-                        "Wednesday",
-                        "Thursday",
-                        "Friday",
-                        "Saturday",
-                      ],
-                    },
-                  ]}
-                  series={[
-                    {
-                      data: Object.values(dashBoardData.daily_distribution),
-                    },
-                  ]}
-                  height={300}
-                />
-              </Card>
-            </Grid>
-            <Grid xs={12} sm={6} lg={3}>
-              <OverviewTraffic
-                chartSeries={[
-                  dashBoardData.vehicle_types.economy,
-                  dashBoardData.vehicle_types.premium,
-                ]}
-                labels={["Economy", "Premium"]}
-                sx={{ height: "100%", borderRadius: "15px" }}
-              />
-            </Grid>
-          </Grid>
+          </div>
+        </div>
+        <Container className="flex flex-row items-evenly justify-center w-full">
+          <div className="w-full flex flex-col items-center justify-center gap-y-8 my-8">
+            <GeneralStatistics />
+            <VisitorAnalyticsPage />
+          </div>
         </Container>
       </Box>
     </>
