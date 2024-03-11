@@ -68,7 +68,7 @@ const NavBar = () => {
 
   return (
     <div className="flex flex-col w-full h-full">
-      <div className="flex flex-row justify-between items-center w-full h-16 bg-white border border-gray font-inter bg-[#f4f2ed]">
+      <div className="flex flex-row justify-between items-center w-full h-16 bg-white border border-gray font-poppins bg-[#f4f2ed]">
         <div className="flex flex-row justify-center items-center gap-x-64 ml-4 max-md:ml-2">
           <NavLink
             to="/"

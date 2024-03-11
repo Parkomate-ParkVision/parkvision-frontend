@@ -21,6 +21,7 @@ import { OverviewTraffic } from "../../components/Overview/overview-traffic";
 import { OverviewAverageOccupancy } from "../../components/Overview/overview-average-occupancy";
 import GeneralStatistics from "../../components/Analytics/GeneralStats/GeneralStatistics";
 import VisitorAnalyticsPage from "../../components/Analytics/VisitorAnalytics/VisitorAnalyticsPage";
+import ParkingStatistics from "../../components/Analytics/ParkingStats/ParkingStatistics";
 
 const now = new Date();
 
@@ -149,6 +150,7 @@ const DashboardCopy = () => {
           <div className="w-full flex flex-col items-center justify-center gap-y-8 my-8">
             <GeneralStatistics />
             <VisitorAnalyticsPage />
+            <ParkingStatistics />
           </div>
         </Container>
       </Box>

@@ -18,9 +18,9 @@ const GeneralStatistics = () => {
     // fetchGeneralStats();
     const data = {
       "Total Earning": 10,
-      "Total Entries": 5,
-      "Total Exits": 20,
-      "First Time Entries": 100,
+      "Total Entries": 20,
+      "Total Exits": 10,
+      "First Time Entries": 30,
     };
 
     setGeneralStats(data);
@@ -31,12 +31,11 @@ const GeneralStatistics = () => {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div className="w-full h-full flex flex-col items-center justify-center border border-gray bg-white rounded-lg p-8 font-poppins">
+        <div className="w-[95vw] h-full flex flex-col items-center justify-center border border-gray bg-white rounded-lg p-8 font-poppins">
           <div className="flex flex-col items-center justify-center">
             <div className="font-bold text-2xl text-[#05004E]">
               General Statistics
             </div>
-            <div className="text-xl text-[#737791]">Summary</div>
           </div>
           <div className="w-full h-full flex flex-row items-center justify-evenly mt-8 gap-x-8">
             <div className="w-[350px] h-[20%] flex flex-col items-left justify-center border-2 border-[#FA5A7D] bg-[#FFE2E5] p-8 rounded-lg">

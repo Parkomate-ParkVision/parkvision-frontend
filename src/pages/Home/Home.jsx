@@ -20,7 +20,7 @@ const Home = () => {
 
   return (
     <div>
-      <div className="relative w-[100%] bg-[#f4f2ed] flex flex-row h-full justify-between items-center max-md:flex-col max-md:flex-col max-md:justify-start max-md:h-[50%] overflow-hidden font-inter">
+      <div className="relative w-[100%] bg-[#f4f2ed] flex flex-row h-full justify-between items-center max-md:flex-col max-md:flex-col max-md:justify-start max-md:h-[50%] overflow-hidden font-poppins">
         <img
           src={homeCarImage}
           alt="Car Image"
