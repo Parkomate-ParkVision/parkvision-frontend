@@ -10,10 +10,15 @@ const OrganizationPage = () => {
   const navigate = useNavigate();
   const [organizations, setOrganizations] = useState({ results: [] });
   const [isLoading, setIsLoading] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
 
   const fetchOrganizations = async ({ next = null }) => {
     if (next) {
-      setIsLoading(true);
+      setIsPageLoading(true);
       try {
         const response = await Fetch.get(next);
         if (response.status === 200) {
@@ -21,11 +26,11 @@ const OrganizationPage = () => {
           setOrganizations(data);
         }
       } catch (error) {
-        // console.log(error);
+        console.log(error);
       }
-      setIsLoading(false);
+      setIsPageLoading(false);
     } else {
-      setIsLoading(true);
+      setIsPageLoading(true);
       try {
         const response = await Fetch.get(ApiConfig.organizations + "/");
         // console.log(response);
@@ -34,14 +39,16 @@ const OrganizationPage = () => {
           setOrganizations(data);
         }
       } catch (error) {
-        // console.log(error);
+        console.log(error);
       }
-      setIsLoading(false);
+      setIsPageLoading(false);
     }
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchOrganizations({ next: null });
+    setIsLoading(false);
   }, []);
 
   const columns = [
@@ -50,7 +57,10 @@ const OrganizationPage = () => {
       headerName: "Sr. No.",
       flex: 0.5,
       renderCell: (params) => (
-        <Typography>{organizations.results.indexOf(params.row) + 1}</Typography>
+        <Typography>
+          {paginationModel.page * 10 +
+            (organizations.results.indexOf(params.row) + 1)}
+        </Typography>
       ),
     },
     { field: "name", headerName: "Name", flex: 1 },
@@ -193,6 +203,15 @@ const OrganizationPage = () => {
     },
   ];
 
+  const handlePageChange = (newPage) => {
+    console.log(newPage);
+    setPaginationModel((prevModel) => ({
+      ...prevModel,
+      page: newPage,
+    }));
+    fetchOrganizations({ next: organizations.next });
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -253,8 +272,14 @@ const OrganizationPage = () => {
         <DataGrid
           rows={organizations.results}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[1]}
+          pageSize={paginationModel.pageSize}
+          rowsPerPageOptions={[paginationModel.pageSize]}
+          pagination
+          paginationModel={paginationModel}
+          rowCount={organizations.count}
+          paginationMode="server"
+          onPaginationModelChange={(newPage) => handlePageChange(newPage.page)}
+          loading={isPageLoading}
         />
       </div>
     </div>

@@ -15,6 +15,11 @@ const CCTVPage = () => {
   const [feedCctv, setFeedCctv] = useState({});
   const [updateCctv, setUpdateCctv] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(false);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
   const [showModal, setShowModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [showVideoFeedModal, setShowVideoFeedModal] = useState(false);
@@ -51,30 +56,30 @@ const CCTVPage = () => {
 
   const fetchCctvs = async ({ next = null }) => {
     if (next) {
-      setIsLoading(true);
       try {
+        setIsPageLoading(true);
         const response = await Fetch.get(next);
         if (response.status === 200) {
           const data = await response.json();
           setCctvs(data);
         }
+        setIsPageLoading(false);
       } catch (error) {
-        // console.log(error);
+        console.log(error);
       }
-      setIsLoading(false);
     } else {
-      setIsLoading(true);
       try {
+        setIsPageLoading(true);
         const response = await Fetch.get(ApiConfig.cctvs + "/");
         if (response.status === 200) {
           const data = await response.json();
           // console.log(data);
           setCctvs(data);
         }
+        setIsPageLoading(false);
       } catch (error) {
         // console.log(error);
       }
-      setIsLoading(false);
     }
   };
 
@@ -92,8 +97,10 @@ const CCTVPage = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchCctvs({ next: null });
     fetchParking();
+    setIsLoading(false);
   }, []);
 
   const columns = [
@@ -102,7 +109,9 @@ const CCTVPage = () => {
       headerName: "Sr. No.",
       flex: 0.5,
       renderCell: (params) => (
-        <Typography>{cctvs.results.indexOf(params.row) + 1}</Typography>
+        <Typography>
+          {paginationModel.page * 10 + (cctvs.results.indexOf(params.row) + 1)}
+        </Typography>
       ),
     },
     ,
@@ -219,6 +228,16 @@ const CCTVPage = () => {
     },
   ];
 
+  const handlePageChange = (newPage) => {
+    setIsPageLoading(true);
+    setPaginationModel((prevModel) => ({
+      ...prevModel,
+      page: newPage,
+    }));
+    fetchCctvs({ next: cctvs.next });
+    setIsPageLoading(false);
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -240,8 +259,14 @@ const CCTVPage = () => {
         <DataGrid
           rows={cctvs.results}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[1]}
+          pageSize={paginationModel.pageSize}
+          rowsPerPageOptions={[paginationModel.pageSize]}
+          pagination
+          paginationModel={paginationModel}
+          rowCount={cctvs.count}
+          paginationMode="server"
+          onPaginationModelChange={(newPage) => handlePageChange(newPage.page)}
+          loading={isPageLoading}
         />
       </div>
       {showModal ? (

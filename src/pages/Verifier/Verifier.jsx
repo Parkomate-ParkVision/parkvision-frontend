@@ -17,6 +17,11 @@ const Verifier = () => {
   const [newNumberPlate, setNewNumberPlate] = useState("");
   const [modal, showModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
   const [open, setOpen] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -37,26 +42,28 @@ const Verifier = () => {
 
   const fetchVehicles = async ({ next = null }) => {
     if (next) {
-      setIsLoading(true);
+      setIsPageLoading(true);
       const response = await Fetch.get(next);
       if (response.status === 200) {
         const data = await response.json();
         setVehicles(data);
-        setIsLoading(false);
+        setIsPageLoading(false);
         return;
       }
     }
-    setIsLoading(true);
+    setIsPageLoading(true);
     const response = await Fetch.get(ApiConfig.unverifiedVehicles + "/");
     if (response.status === 200) {
       const data = await response.json();
       setVehicles(data);
-      setIsLoading(false);
+      setIsPageLoading(false);
     }
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchVehicles({});
+    setIsLoading(false);
   }, []);
 
   const columns = [
@@ -66,7 +73,8 @@ const Verifier = () => {
       flex: 0.5,
       renderCell: (params) => (
         <Typography>
-          {vehicles.results && vehicles.results.indexOf(params.row) + 1}
+          {paginationModel.page * 10 +
+            (vehicles.results.indexOf(params.row) + 1)}
         </Typography>
       ),
     },
@@ -144,6 +152,15 @@ const Verifier = () => {
     },
   ];
 
+  const handlePageChange = (newPage) => {
+    console.log(newPage);
+    setPaginationModel((prevModel) => ({
+      ...prevModel,
+      page: newPage,
+    }));
+    fetchVehicles({ next: vehicles.next });
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -153,10 +170,16 @@ const Verifier = () => {
       <div className="font-bold">Verifier</div>
       <div style={{ height: "80vh", width: "100%" }}>
         <DataGrid
-          rows={vehicles.results || []}
+          rows={vehicles.results}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[1]}
+          pageSize={paginationModel.pageSize}
+          rowsPerPageOptions={[paginationModel.pageSize]}
+          pagination
+          paginationModel={paginationModel}
+          rowCount={vehicles.count}
+          paginationMode="server"
+          onPaginationModelChange={(newPage) => handlePageChange(newPage.page)}
+          loading={isPageLoading}
         />
       </div>
       {open && (

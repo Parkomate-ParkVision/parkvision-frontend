@@ -13,6 +13,11 @@ const ParkingPage = () => {
   const [newParking, setNewParking] = useState({});
   const [updateParking, setUpdateParking] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
   const [showModal, setShowModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [organizations, setOrganizations] = useState({ results: [] });
@@ -52,7 +57,7 @@ const ParkingPage = () => {
 
   const fetchParkings = async ({ next = null }) => {
     if (next) {
-      setIsLoading(true);
+      setIsPageLoading(true);
       try {
         const response = await Fetch.get(next);
         if (response.status === 200) {
@@ -60,11 +65,11 @@ const ParkingPage = () => {
           setParkings(data);
         }
       } catch (error) {
-        // console.log(error);
+        console.log(error);
       }
-      setIsLoading(false);
+      setIsPageLoading(false);
     } else {
-      setIsLoading(true);
+      setIsPageLoading(true);
       try {
         const response = await Fetch.get(ApiConfig.parkings + "/");
         if (response.status === 200) {
@@ -73,9 +78,9 @@ const ParkingPage = () => {
           setParkings(data);
         }
       } catch (error) {
-        // console.log(error);
+        console.log(error);
       }
-      setIsLoading(false);
+      setIsPageLoading(false);
     }
   };
 
@@ -88,13 +93,15 @@ const ParkingPage = () => {
         // console.log(data);
       }
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchParkings({ next: null });
     fetchOrganization();
+    setIsLoading(false);
   }, []);
 
   const columns = [
@@ -103,7 +110,10 @@ const ParkingPage = () => {
       headerName: "Sr. No.",
       flex: 0.5,
       renderCell: (params) => (
-        <Typography>{parkings.results.indexOf(params.row) + 1}</Typography>
+        <Typography>
+          {paginationModel.page * 10 +
+            (parkings.results.indexOf(params.row) + 1)}
+        </Typography>
       ),
     },
     ,
@@ -193,6 +203,16 @@ const ParkingPage = () => {
     },
   ];
 
+  const handlePageChange = (newPage) => {
+    setIsPageLoading(true);
+    setPaginationModel((prevModel) => ({
+      ...prevModel,
+      page: newPage,
+    }));
+    fetchParkings({ next: parkings.next });
+    setIsPageLoading(false);
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -214,8 +234,14 @@ const ParkingPage = () => {
         <DataGrid
           rows={parkings.results}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[1]}
+          pageSize={paginationModel.pageSize}
+          rowsPerPageOptions={[paginationModel.pageSize]}
+          pagination
+          paginationModel={paginationModel}
+          rowCount={parkings.count}
+          paginationMode="server"
+          onPaginationModelChange={(newPage) => handlePageChange(newPage.page)}
+          loading={isPageLoading}
         />
       </div>
       {showModal ? (

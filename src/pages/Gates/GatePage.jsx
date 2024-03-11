@@ -13,6 +13,11 @@ const GatePage = () => {
   const [newGate, setNewGates] = useState({});
   const [updateGate, setUpdateGate] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isPageLoading, setIsPageLoading] = useState(false);
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
   const [showModal, setShowModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [organizations, setOrganizations] = useState({ results: [] });
@@ -48,30 +53,31 @@ const GatePage = () => {
 
   const fetchGates = async ({ next = null }) => {
     if (next) {
-      setIsLoading(true);
       try {
+        setIsPageLoading(true);
         const response = await Fetch.get(next);
-        if (response.status === 201) {
+        if (response.status === 200) {
           const data = await response.json();
+          // console.log(data);
           setGates(data);
         }
+        setIsPageLoading(false);
       } catch (error) {
         console.log(error);
       }
-      setIsLoading(false);
     } else {
-      setIsLoading(true);
       try {
+        setIsPageLoading(true);
         const response = await Fetch.get(ApiConfig.gates + "/");
         if (response.status === 200) {
           const data = await response.json();
           // console.log(data);
           setGates(data);
         }
+        setIsPageLoading(false);
       } catch (error) {
         // console.log(error);
       }
-      setIsLoading(false);
     }
   };
 
@@ -89,8 +95,10 @@ const GatePage = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchGates({ next: null });
     fetchOrganization();
+    setIsLoading(false);
   }, []);
 
   const columns = [
@@ -99,7 +107,9 @@ const GatePage = () => {
       headerName: "Sr. No.",
       flex: 0.5,
       renderCell: (params) => (
-        <Typography>{gates.results.indexOf(params.row) + 1}</Typography>
+        <Typography>
+          {paginationModel.page * 10 + (gates.results.indexOf(params.row) + 1)}
+        </Typography>
       ),
     },
     // { field: "organization", headerName: "Organization Id", flex: 1 },
@@ -193,6 +203,15 @@ const GatePage = () => {
     },
   ];
 
+  const handlePageChange = (newPage) => {
+    console.log(newPage);
+    setPaginationModel((prevModel) => ({
+      ...prevModel,
+      page: newPage,
+    }));
+    fetchGates({ next: gates.next });
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -214,8 +233,14 @@ const GatePage = () => {
         <DataGrid
           rows={gates.results}
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[1]}
+          pageSize={paginationModel.pageSize}
+          rowsPerPageOptions={[paginationModel.pageSize]}
+          pagination
+          paginationModel={paginationModel}
+          rowCount={gates.count}
+          paginationMode="server"
+          onPaginationModelChange={(newPage) => handlePageChange(newPage.page)}
+          loading={isPageLoading}
         />
       </div>
       {showModal ? (
