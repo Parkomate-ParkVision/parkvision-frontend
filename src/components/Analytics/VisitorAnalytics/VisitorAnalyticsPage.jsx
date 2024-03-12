@@ -146,7 +146,7 @@ const VisitorAnalyticsPage = () => {
             </div>
             <div className="w-full flex flex-col items-center justify-start bg-white rounded-lg p-8 gap-y-8 border border-black">
               <div className="w-full font-bold text-2xl text-[#05004E]">
-                Visitors By Hours
+                Visitors By Hours (RH)
               </div>
               <Line options={visitorsByHoursOptions} data={visitorsByHoursData} />
             </div>
