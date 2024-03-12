@@ -22,6 +22,8 @@ import { OverviewAverageOccupancy } from "../../components/Overview/overview-ave
 import GeneralStatistics from "../../components/Analytics/GeneralStats/GeneralStatistics";
 import VehicleSegmentation from "../../components/Segmentation/VehicleSegmentation";
 import OwnerSegmentation from "../../components/Segmentation/OwnerSegmentation";
+import DemographicSegmentation from "../../components/Segmentation/DemographicSegmentation";
+
 
 const now = new Date();
 
@@ -150,6 +152,7 @@ const DashboardCopy = () => {
 					<div className="w-full flex flex-col items-center justify-center gap-y-8 my-8">
 						<VehicleSegmentation />
 						<OwnerSegmentation />
+						<DemographicSegmentation />
 					</div>
 				</Container>
 			</Box>
