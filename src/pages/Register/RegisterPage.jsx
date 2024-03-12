@@ -36,7 +36,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-[90%]">
+    <div className="flex flex-col items-center justify-center w-[90%] font-poppins">
       <form
         action={handleRegister}
         className="flex flex-col w-[90%] items-center justify-center gap-y-4"

@@ -109,7 +109,7 @@ const DashboardCopy = () => {
         sx={{
           flexGrow: 1,
         }}
-        className="w-full h-full bg-white flex flex-col items-center justify-center gap-y-8"
+        className="w-full h-full bg-white flex flex-col items-center justify-center gap-y-8 font-poppins"
       >
         <div className="flex flex-row items-evenly justify-center w-full h-20 bg-[#f4f2ed] max-md:flex-col border border-gray">
           <div className="w-[33%] flex flex-row items-center justify-center gap-x-8">
