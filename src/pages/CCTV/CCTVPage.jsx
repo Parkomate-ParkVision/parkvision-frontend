@@ -243,7 +243,7 @@ const CCTVPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-4 h-full w-[80%] mt-4">
+    <div className="flex flex-col gap-y-4 h-full w-[80%] mt-4 font-poppins">
       <div className="flex flex-row justify-between items-center">
         <div className="font-bold text-2xl">CCTV</div>
         <button

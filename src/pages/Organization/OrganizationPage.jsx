@@ -216,9 +216,9 @@ const OrganizationPage = () => {
     return <div>Loading...</div>;
   }
   return (
-    <div className="flex flex-col gap-y-4 h-full w-[80%] mt-4">
+    <div className="flex flex-col gap-y-4 h-full w-[80%] mt-4 font-poppins">
       <div className="flex flex-row justify-between items-center">
-        <div className="font-bold text-4xl">Organizations</div>
+        <div className="font-bold text-2xl">Organizations</div>
         <button
           className="bg-[#8DBF41] text-black px-4 py-2 rounded-lg"
           onClick={() => {

@@ -35,11 +35,11 @@ export const authRouter = createBrowserRouter([
     element: <NavBar />,
     children: [
       {
-        path: "/",
+        path: "/legacy",
         element: <Dashboard />,
       },
       {
-        path: "/copy",
+        path: "/",
         element: <DashboardCopy />,
       },
       {

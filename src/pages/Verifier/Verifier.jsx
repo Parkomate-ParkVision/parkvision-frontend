@@ -166,8 +166,10 @@ const Verifier = () => {
   }
 
   return (
-    <div className="flex flex-col gap-y-8 h-full w-[80%]">
-      <div className="font-bold">Verifier</div>
+    <div className="flex flex-col gap-y-4 h-full w-[80%] mt-4 font-poppins">
+      <div className="flex flex-row justify-between items-center">
+        <div className="font-bold text-2xl pt-2">Verifier</div>
+      </div>
       <div style={{ height: "80vh", width: "100%" }}>
         <DataGrid
           rows={vehicles.results}

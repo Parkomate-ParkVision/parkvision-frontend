@@ -131,8 +131,8 @@ const Dashboard = () => {
     return isNaN(ParkingMinutes)
       ? "0"
       : `${Math.floor(ParkingMinutes / 6000)} Hrs ${Math.floor(
-        ParkingMinutes % 60
-      )} Mins`;
+          ParkingMinutes % 60
+        )} Mins`;
   };
 
   const weeklyVehicleCount = (vehicles) => {
@@ -253,7 +253,7 @@ const Dashboard = () => {
           flexGrow: 1,
           py: 2,
         }}
-        className="w-full h-full bg-[#f4f2ed] flex flex-col items-center justify-center"
+        className="w-full h-full bg-[#f4f2ed] flex flex-col items-center justify-center font-poppins"
       >
         <div className="flex flex-row items-center justify-center mb-8 w-full h-20 bg-[#f4f2ed]">
           <h1 className="mr-4">Organization: </h1>
@@ -310,15 +310,15 @@ const Dashboard = () => {
                     value={
                       state.value == "Daily"
                         ? vehicleData.filter((vehicle) => {
-                          const entry = new Date(vehicle.entry_time);
-                          return entry.toDateString() == now.toDateString();
-                        }).length
+                            const entry = new Date(vehicle.entry_time);
+                            return entry.toDateString() == now.toDateString();
+                          }).length
                         : state.value == "Weekly"
-                          ? vehicleData.filter((vehicle) => {
+                        ? vehicleData.filter((vehicle) => {
                             const entry = new Date(vehicle.entry_time);
                             return dayDifference(now, entry) <= 7;
                           }).length
-                          : vehicleData.filter((vehicle) => {
+                        : vehicleData.filter((vehicle) => {
                             const entry = new Date(vehicle.entry_time);
                             // return (
                             //   entry.getFullYear() == now.getFullYear() &&
@@ -335,7 +335,7 @@ const Dashboard = () => {
               xs={12}
               sm={6}
               lg={3}
-            // ref={containerRef}
+              // ref={containerRef}
             >
               <Slide direction="down" in={true} mountOnEnter unmountOnExit>
                 <div>
@@ -347,15 +347,15 @@ const Dashboard = () => {
                     value={
                       state.value == "Daily"
                         ? vehicleData.filter((vehicle) => {
-                          const exit = new Date(vehicle.exit_time);
-                          return exit.toDateString() == now.toDateString();
-                        }).length
+                            const exit = new Date(vehicle.exit_time);
+                            return exit.toDateString() == now.toDateString();
+                          }).length
                         : state.value == "Weekly"
-                          ? vehicleData.filter((vehicle) => {
+                        ? vehicleData.filter((vehicle) => {
                             const exit = new Date(vehicle.exit_time);
                             return dayDifference(now, exit) <= 7;
                           }).length
-                          : vehicleData.filter((vehicle) => {
+                        : vehicleData.filter((vehicle) => {
                             const exit = new Date(vehicle.exit_time);
                             // return (
                             //   exit.getFullYear() == now.getFullYear() &&
@@ -376,7 +376,7 @@ const Dashboard = () => {
                     value={Math.floor(
                       (selectedOrganization.filled_slots /
                         selectedOrganization.total_slots) *
-                      100
+                        100
                     )}
                   />
                 </div>
@@ -392,19 +392,19 @@ const Dashboard = () => {
                     value={
                       state.value == "Daily"
                         ? calcAvgParking(
-                          vehicleData.filter((vehicle) => {
-                            const exit = new Date(vehicle.exit_time);
-                            return exit.toDateString() == now.toDateString();
-                          })
-                        )
+                            vehicleData.filter((vehicle) => {
+                              const exit = new Date(vehicle.exit_time);
+                              return exit.toDateString() == now.toDateString();
+                            })
+                          )
                         : state.value == "Weekly"
-                          ? calcAvgParking(
+                        ? calcAvgParking(
                             vehicleData.filter((vehicle) => {
                               const exit = new Date(vehicle.exit_time);
                               return dayDifference(now, exit) <= 7;
                             })
                           )
-                          : calcAvgParking(
+                        : calcAvgParking(
                             vehicleData.filter((vehicle) => {
                               const exit = new Date(vehicle.exit_time);
                               // return (
@@ -566,13 +566,13 @@ const Dashboard = () => {
                   {
                     data: [
                       dashBoardData.average_occupancy_by_vehicle_type[
-                      "economy"
+                        "economy"
                       ],
                       dashBoardData.average_occupancy_by_vehicle_type[
-                      "midrange"
+                        "midrange"
                       ],
                       dashBoardData.average_occupancy_by_vehicle_type[
-                      "premium"
+                        "premium"
                       ],
                     ],
                   },
