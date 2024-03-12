@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { DashBoardContext } from "../../../contexts/DashboardContext";
 
 const GeneralStatistics = () => {
   const [generalStats, setGeneralStats] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const {state, selectedOrganization, vehicleData, dashBoardData} = useContext(DashBoardContext)
 
   useEffect(() => {
     // const fetchGeneralStats = async () => {

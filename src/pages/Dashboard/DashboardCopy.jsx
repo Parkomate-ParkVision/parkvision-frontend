@@ -22,6 +22,7 @@ import { OverviewAverageOccupancy } from "../../components/Overview/overview-ave
 import GeneralStatistics from "../../components/Analytics/GeneralStats/GeneralStatistics";
 import VisitorAnalyticsPage from "../../components/Analytics/VisitorAnalytics/VisitorAnalyticsPage";
 import ParkingStatistics from "../../components/Analytics/ParkingStats/ParkingStatistics";
+import { DashBoardContext } from "../../contexts/DashboardContext";
 
 const now = new Date();
 
@@ -37,6 +38,7 @@ const DashboardCopy = () => {
   const [organizations, setOrganizations] = useState({ results: [] });
   const [vehicleData, setVehicleData] = useState([]);
   const [dashBoardData, setDashBoardData] = useState({});
+  const [generalStats, setGeneralStats] = useState(null);
 
   const [isloading, setisLoading] = useState(true);
 
@@ -89,6 +91,18 @@ const DashboardCopy = () => {
         console.log(error);
       });
   };
+
+  // const fetchGeneralStats = async () => {
+    //     try {
+    //     const response = await fetch("http://localhost:8000/api/generalstats");
+    //     const data = await response.json();
+    //     setGeneralStats(data);
+    //     setLoading(false);
+    //     } catch (error) {
+    //     console.log(error);
+    //     }
+    // };
+    // fetchGeneralStats();
 
   useEffect(() => {
     setisLoading(true);
@@ -147,11 +161,13 @@ const DashboardCopy = () => {
           </div>
         </div>
         <Container className="flex flex-row items-evenly justify-center w-full">
-          <div className="w-full flex flex-col items-center justify-center gap-y-8 my-8">
-            <GeneralStatistics />
-            <VisitorAnalyticsPage />
-            <ParkingStatistics />
-          </div>
+          <DashBoardContext.Provider value={{state, selectedOrganization, vehicleData, dashBoardData, setGeneralStats}}>
+            <div className="w-full flex flex-col items-center justify-center gap-y-8 my-8">
+              <GeneralStatistics />
+              <VisitorAnalyticsPage />
+              <ParkingStatistics />
+            </div>
+          </DashBoardContext.Provider>
         </Container>
       </Box>
     </>
