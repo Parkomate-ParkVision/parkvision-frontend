@@ -161,7 +161,7 @@ const DashboardCopy = () => {
           </div>
         </div>
         <Container className="flex flex-row items-evenly justify-center w-full">
-          <DashBoardContext.Provider value={{state, selectedOrganization, vehicleData, dashBoardData, setGeneralStats}}>
+          <DashBoardContext.Provider value={{state, selectedOrganization, vehicleData, dashBoardData,generalStats, setGeneralStats}}>
             <div className="w-full flex flex-col items-center justify-center gap-y-8 my-8">
               <GeneralStatistics />
               <VisitorAnalyticsPage />
