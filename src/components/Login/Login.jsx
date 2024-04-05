@@ -1,15 +1,19 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
+import AuthContext from "../../authContext";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import Fetch from "../../utils/Fetch";
 import { ApiConfig } from "../../utils/config";
 import { toast } from "react-toastify";
 
 const LoginForm = () => {
+  const setAuth = useContext(AuthContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState({});
 
   const handleLogin = async ({ e }) => {
     const formData = new FormData();
@@ -18,12 +22,34 @@ const LoginForm = () => {
     var response = await Fetch.post(ApiConfig.login, { email, password });
     if (response.status === 200) {
       response = await response.json();
-      console.log(response);
+      // console.log(response);
+      var decoded = jwtDecode(response.tokens.access);
+      const userId = decoded.user_id;
+      localStorage.setItem("userId", userId);
       localStorage.setItem("accessToken", response.tokens.access);
       localStorage.setItem("refreshToken", response.tokens.refresh);
       localStorage.setItem("privilege", response.tokens.privilege);
-      window.location.reload();
-      navigate("/");
+      window.location.href = "/";
+      axios
+        .get(ApiConfig.users + "/" + userId + "/", {
+          headers: {
+            Authorization: `Bearer ${response.tokens.access}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          setUser(res.data);
+          setAuth({
+            login: true,
+            userId: userId,
+            name: res.data.name,
+            privilege: res.data.privilege,
+            email: res.data.email,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       toast.success("Logged In Successfully");
     } else {
       toast.error("Invalid Credentials");

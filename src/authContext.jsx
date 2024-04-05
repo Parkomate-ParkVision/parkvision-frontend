@@ -2,8 +2,9 @@ import { createContext, useState } from "react";
 
 const AuthContext = createContext({
   login: localStorage.getItem("accessToken") === null,
-  uid: "",
-  uname: "",
+  userId: "",
+  name: "",
+  privilege: "",
 });
 
 export default AuthContext;

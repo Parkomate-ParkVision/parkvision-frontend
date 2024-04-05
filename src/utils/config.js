@@ -18,4 +18,5 @@ export const ApiConfig = {
     verification: `${baseURL}/verify-vehicle`,
     cctvFeed: `${fastAPIURL}/video_feed`,
     gates: `${baseURL}/gates`,
+    users: `${baseURL}/users`,
 };

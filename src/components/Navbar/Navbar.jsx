@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import logout from "../../assets/logout.svg";
 import { Outlet, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
@@ -7,6 +7,10 @@ import { FaArrowUp } from "react-icons/fa";
 import Fetch from "../../utils/Fetch";
 import { ApiConfig } from "../../utils/config";
 import { toast } from "react-toastify";
+import Profile from "./ProfileTab";
+import axios from "axios";
+import AuthContext from "../../authContext";
+import { useContext } from "react";
 
 const ScrollToTopButton = ({ show }) => {
   const scrollToTop = () => {
@@ -34,11 +38,40 @@ const ScrollToTopButton = ({ show }) => {
 const NavBar = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [privilege, setPrivilege] = useState("");
+  const [user, setUser] = useState({});
   const location = useLocation();
+  const auth = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     const privilege = localStorage.getItem("privilege");
+    const accessToken = localStorage.getItem("accessToken");
+    const userId = localStorage.getItem("userId");
+
+    if (!userId) {
+      localStorage.clear();
+      window.location.href = "/";
+      navigate("/login");
+    }
+
+    if (!accessToken) {
+      localStorage.clear();
+      window.location.href = "/";
+      navigate("/login");
+    }
+
+    axios
+      .get(ApiConfig.users + "/" + userId + "/", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     setPrivilege(String(privilege));
     const handleScroll = () => {
       setShowScrollButton(window.scrollY > 10);
@@ -59,11 +92,23 @@ const NavBar = () => {
     if (response.status === 204) {
       localStorage.clear();
       window.location.href = "/";
+      setAuth({ login: false, uid: "", uname: "" });
       toast.success("Logged Out Successfully");
     } else {
       localStorage.clear();
       toast.error("Error Logging Out");
     }
+  };
+
+  const dropdownRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const toggleVisibility = () => {
+    setIsVisible(!isVisible);
   };
 
   return (
@@ -102,7 +147,7 @@ const NavBar = () => {
             <NavLink
               to="/verifier"
               className={`flex flex-row justify-center items-center font-thin cursor-pointer text-black hover:text-[#8DBF41] transition duration-300 ease-in-out ${
-                location.pathname == "/retrainer"
+                location.pathname == "/verifier"
                   ? "text-[#8DBF41] bg-gray-200 p-2 rounded"
                   : ""
               }`}
@@ -165,13 +210,31 @@ const NavBar = () => {
             )}
           </div>
         </div>
-        <div
+        {/* <div
           className="flex flex-row justify-center items-center gap-x-4 mr-2 cursor-pointer"
           onClick={() => {
             handleLogout();
           }}
         >
           <img src={logout} alt="Logout" className="w-8 h-8" />
+        </div> */}
+        <div className="flex justify-center items-center gap-x-2 mr-4 border border-gray">
+          <Profile
+            id="profile"
+            dropdownRef={dropdownRef}
+            user={user}
+            toggleVisibility={toggleVisibility}
+            isVisible={isVisible}
+            setIsVisible={setIsVisible}
+            handleLogout={handleLogout}
+            navigate={navigate}
+          />
+          {/* <button onClick={handleLogout} className='px-3 py-2 rounded bg-primary text-white hover:bg-opacity-80'>LOGOUT</button> */}
+          <div className="pl-4 max-lg:block hidden" id="menutoggle">
+            <button onClick={toggleMenu}>
+              <i className="fa-solid fa-bars text-black text-xl"></i>
+            </button>
+          </div>
         </div>
       </div>
       <div className="flex flex-row justify-center items-center w-full h-full">

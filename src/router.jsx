@@ -13,6 +13,7 @@ import CustomerSegmentation from "./pages/Customer-Segmentation/CustomerSegmenta
 import GatePage from "./pages/Gates/GatePage";
 import LoginPage from "./pages/Login/Login";
 import DashboardCopy from "./pages/Dashboard/DashboardCopy";
+import ProfilePage from "./pages/Profile/ProfilePage";
 
 export const router = createBrowserRouter([
   {
@@ -73,6 +74,10 @@ export const authRouter = createBrowserRouter([
       {
         path: "customer-segmentation",
         element: <CustomerSegmentation />,
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
       },
     ],
   },

@@ -53,7 +53,7 @@ const IndividualOrganizationPage = () => {
 
   const columns = [
     {
-      field: "Sr. No.",
+      field: "id",
       headerName: "Sr. No.",
       flex: 0.5,
       renderCell: (params) => (
@@ -65,73 +65,81 @@ const IndividualOrganizationPage = () => {
     { field: "name", headerName: "Name", flex: 1 },
     { field: "email", headerName: "Email", flex: 1 },
     { field: "phone", headerName: "Phone", flex: 1 },
-    {
-      field: "delete",
-      headerName: "Delete",
-      width: 150,
-      renderCell: (params) => (
-        <Typography>
-          <Button
-            variant="contained"
-            size="small"
-            sx={{
-              backgroundColor: "red",
-              borderColor: "red",
-              color: "black",
-              ":hover": {
-                backgroundColor: "black",
-                color: "red",
-              },
-            }}
-            onClick={() => {
-              Swal.fire({
-                title: "Delete Organization",
-                text: "Are you sure you want to delete this organization?",
-                focusConfirm: false,
-                showCancelButton: true,
-                confirmButtonText: "Delete",
-                showLoaderOnConfirm: true,
-                allowOutsideClick: () => !Swal.isLoading(),
-              }).then(async (result) => {
-                if (result.isConfirmed) {
-                  const data = {
-                    email: params.row.email,
-                  };
-                  console.log(`${ApiConfig.admins}/${id}/`);
-                  const response = await Fetch.delete(
-                    `${ApiConfig.admins}/${id}/`,
-                    data
-                  );
-                  if (response.status === 200) {
-                    toast.success("Admin deleted successfully");
-                  } else {
-                    toast.error("Error deleting admin");
-                  }
-                  fetchOrganization();
-                }
-              });
-            }}
-          >
-            Delete
-          </Button>
-        </Typography>
-      ),
-    },
+    organization.isOwner
+      ? {
+          field: "delete",
+          headerName: "Delete",
+          width: 150,
+          renderCell: (params) => (
+            <Typography>
+              <Button
+                variant="contained"
+                size="small"
+                sx={{
+                  backgroundColor: "red",
+                  borderColor: "red",
+                  color: "black",
+                  ":hover": {
+                    backgroundColor: "black",
+                    color: "red",
+                  },
+                }}
+                onClick={() => {
+                  Swal.fire({
+                    title: "Delete Organization",
+                    text: "Are you sure you want to delete this organization?",
+                    focusConfirm: false,
+                    showCancelButton: true,
+                    confirmButtonText: "Delete",
+                    showLoaderOnConfirm: true,
+                    allowOutsideClick: () => !Swal.isLoading(),
+                  }).then(async (result) => {
+                    if (result.isConfirmed) {
+                      const data = {
+                        email: params.row.email,
+                      };
+                      console.log(`${ApiConfig.admins}/${id}/`);
+                      const response = await Fetch.delete(
+                        `${ApiConfig.admins}/${id}/`,
+                        data
+                      );
+                      if (response.status === 200) {
+                        toast.success("Admin deleted successfully");
+                      } else {
+                        toast.error("Error deleting admin");
+                      }
+                      fetchOrganization();
+                    }
+                  });
+                }}
+              >
+                Delete
+              </Button>
+            </Typography>
+          ),
+        }
+      : {},
   ];
 
   return (
     <div className="flex flex-col gap-y-4 h-full w-[80%] mt-4 font-poppin s">
       <div className="flex flex-row justify-between items-center">
         <div className="font-bold text-2xl">{organization.name}</div>
-        <button
-          className="bg-[#8DBF41] text-black px-4 py-2 rounded-lg"
-          onClick={() => setShowModal(true)}
-        >
-          Add Admin
-        </button>
+        {organization.isOwner && (
+          <button
+            className="bg-[#8DBF41] text-black px-4 py-2 rounded-lg"
+            onClick={() => setShowModal(true)}
+          >
+            Add Admin
+          </button>
+        )}
       </div>
       <div style={{ height: "80vh", width: "100%" }}>
         <DataGrid
+          getRowId={(row) =>
+            organization.adminDetails &&
+            organization.adminDetails.indexOf(row) + 1
+          }
           rows={organization.adminDetails || []}
           columns={columns}
           pageSize={5}
