@@ -42,59 +42,90 @@ const DashboardCopy = () => {
 
 	const [isloading, setisLoading] = useState(true);
 
-	const fetchVehicleData = async (orgData) => {
-		try {
-			const response = await Fetch.get(
-				ApiConfig.getVehiclesByOrganization + "/" + orgData.id + "/"
-			);
-			if (response.status === 200) {
-				const data = await response.json();
-				console.log(data);
-				setVehicleData(data);
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
+	// const fetchVehicleData = async (orgData) => {
+	// 	try {
+	// 		const response = await Fetch.get(
+	// 			ApiConfig.getVehiclesByOrganization + "/" + orgData.id + "/"
+	// 		);
+	// 		if (response.status === 200) {
+	// 			const data = await response.json();
+	// 			console.log(data);
+	// 			setVehicleData(data);
+	// 		}
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// };
 
-	const fetchDashBoardData = async (orgData) => {
-		try {
-			const response = await Fetch.get(
-				ApiConfig.dashboard + "/" + orgData.id + "/"
-			);
-			if (response.status === 200) {
-				const data = await response.json();
-				console.log(data);
-				setDashBoardData(data);
+	// const fetchDashBoardData = async (orgData) => {
+	// 	try {
+	// 		const response = await Fetch.get(
+	// 			ApiConfig.dashboard + "/" + orgData.id + "/"
+	// 		);
+	// 		if (response.status === 200) {
+	// 			const data = await response.json();
+	// 			console.log(data);
+	// 			setDashBoardData(data);
 
-				setisLoading(false);
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
+	// 			setisLoading(false);
+	// 		}
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// };
 
-	const fetchOrganizations = () => {
-		axios
-			.get(ApiConfig.organizationNoPagination, {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-				},
-			})
-			.then((response) => {
-				setOrganizations(response.data);
-				setSelectedOrganization(response.data[0]);
-				fetchVehicleData(response.data[0]);
-				fetchDashBoardData(response.data[0]);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	};
+	// const fetchOrganizations = () => {
+	// 	axios
+	// 		.get(ApiConfig.organizationNoPagination, {
+	// 			headers: {
+	// 				Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+	// 			},
+	// 		})
+	// 		.then((response) => {
+	// 			setOrganizations(response.data);
+	// 			setSelectedOrganization(response.data[0]);
+	// 			fetchVehicleData(response.data[0]);
+	// 			fetchDashBoardData(response.data[0]);
+	// 		})
+	// 		.catch((error) => {
+	// 			console.log(error);
+	// 		});
+	// };
 
 	useEffect(() => {
 		setisLoading(true);
-		fetchOrganizations();
+		// fetchOrganizations();
+		setOrganizations([
+			{
+				id: 1,
+				name: "Organization 1",
+			},
+			{
+				id: 2,
+				name: "Organization 2",
+			},
+		]);
+		setSelectedOrganization({
+			id: 1,
+			name: "Organization 1",
+		});
+		setVehicleData([
+			{
+				id: 1,
+				vehicle_number: "1234",
+				owner_name: "Owner 1",
+				owner_phone: "1234567890",
+				owner_email: "",
+				owner_address: "",
+			}
+		]);
+		setDashBoardData({
+			TotalEarning: 1000,
+			TotalEntries: 100,
+			TotalExits: 50,
+			FirstTimeEntries: 10,
+		});
+		setisLoading(false);
 	}, []);
 
 	const handleStateChange = (option) => {

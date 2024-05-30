@@ -1,6 +1,9 @@
 import { ApiConfig } from '../../utils/config';
+import feed1 from '../../assets/Feed/06-05-2024_entry_compilation.mp4';
+import feed2 from '../../assets/Feed/24-05-2024_exit_compilation.mp4';
 
-const VideoStream = ({ url }) => {
+
+const VideoStream = ({ url, index }) => {
 	const videoUrl = String(url)
 		.replace('://', '%3A%2F%2F')
 		.replace('/', '%2F')
@@ -23,7 +26,7 @@ const VideoStream = ({ url }) => {
           width="798"
           height="449"
         /> */}
-				<video width={798} height={449} src="../../assets/24-05-2024_exit_compilation.mp4" type='video/mp4' controls autoPlay/>
+				<video width={798} height={449} src={index % 2 == 0 ? feed1 : feed2} type='video/mp4' controls autoPlay/>
 			</div>
 		</div>
 	);

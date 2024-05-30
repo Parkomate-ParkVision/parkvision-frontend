@@ -22,8 +22,8 @@ const LoginForm = () => {
       localStorage.setItem("accessToken", response.tokens.access);
       localStorage.setItem("refreshToken", response.tokens.refresh);
       localStorage.setItem("privilege", response.tokens.privilege);
-      window.location.reload();
       navigate("/");
+      window.location.reload();
       toast.success("Logged In Successfully");
     } else {
       toast.error("Invalid Credentials");

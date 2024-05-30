@@ -24,6 +24,7 @@ const CCTVPage = () => {
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
 	const [showVideoFeedModal, setShowVideoFeedModal] = useState(false);
 	const [parking, setParking] = useState({ results: [] });
+	const [videoIndex, setVideoIndex] = useState(0);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -139,6 +140,9 @@ const CCTVPage = () => {
 						}}
 						onClick={(e) => {
 							// console.log(params.row.id);
+							const index = paginationModel.page * 10 +
+								(cctvs.results.indexOf(params.row) + 1);
+							setVideoIndex(index);
 							setFeedCctv(params.row);
 							setShowVideoFeedModal(true);
 						}}
@@ -582,7 +586,7 @@ const CCTVPage = () => {
 									</h3>
 								</div>
 								<div className='rounded-tl rounded-tr w-full h-[400px] flex flex-col justify-center items-center'>
-									<VideoPlayer url="random" />
+									<VideoPlayer url="random" index={videoIndex}/>
 								</div>
 								<div className='flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b'>
 									<button
