@@ -12,11 +12,22 @@ import {
   BarElement,
 } from "chart.js";
 import { faker } from "@faker-js/faker";
-
-import { Line, Bar } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
 
 const ParkingAnalytics = () => {
   const [loading, setLoading] = useState(true);
+  const [weeklyOccupancy, setWeeklyOccupancy] = useState(false);
+  const [weeklyVehicleTypes, setWeeklyVehicleTypes] = useState(false);
+  const [weeklyParkingProductivity, setWeeklyParkingProductivity] = useState(false);
+  const handleWeeklyOccupancyOpen = () => setWeeklyOccupancy(true);
+  const handleWeeklyOccupancyClose = () => setWeeklyOccupancy(false);
+  const handleWeeklyVehicleTypesOpen = () => setWeeklyVehicleTypes(true);
+  const handleWeeklyVehicleTypesClose = () => setWeeklyVehicleTypes(false);
+  const handleWeeklyParkingProductivityOpen = () => setWeeklyParkingProductivity(true);
+  const handleWeeklyParkingProductivityClose = () => setWeeklyParkingProductivity(false);
 
   useEffect(() => {
     const data = {
@@ -39,6 +50,18 @@ const ParkingAnalytics = () => {
     Filler,
     BarElement
   );
+
+  const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 900,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
   const months = [
     "January",
@@ -183,24 +206,76 @@ const ParkingAnalytics = () => {
             </div>
           </div>
           <div className="w-full flex flex-row items-stretch justify-start mt-8 gap-x-16">
+
             <div className="w-full flex flex-col items-center justify-start bg-white rounded-lg p-8 gap-y-8 border border-black">
-              <div className="w-full font-bold text-2xl text-[#05004E]">
-                Weekly Occupancy
+              <div className="flex justify-between w-full">
+                <div className="font-bold text-2xl text-[#05004E]">
+                  Weekly Occupancy
+                </div>
+                <Button onClick={handleWeeklyOccupancyOpen}>Expand</Button>
               </div>
+              <Modal
+                open={weeklyOccupancy}
+                onClose={handleWeeklyOccupancyClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={modalStyle}>
+                  <div className="w-full font-bold text-3xl text-[#05004E]">
+                    Weekly Occupancy
+                  </div>
+                  <Bar options={weeklyOccupancyOptions} data={weeklyOccupancyData} />
+                </Box>
+              </Modal>
               <Bar options={weeklyOccupancyOptions} data={weeklyOccupancyData} />
             </div>
+
             <div className="w-full flex flex-col items-center justify-start bg-white rounded-lg p-8 gap-y-8 border border-black">
-              <div className="w-full font-bold text-2xl text-[#05004E]">
-                Vehicle Types
+              <div className="flex justify-between w-full">
+                <div className="font-bold text-2xl text-[#05004E]">
+                  Vehicle Types 
+                </div>
+                <Button onClick={handleWeeklyVehicleTypesOpen}>Expand</Button>
               </div>
+              <Modal
+                open={weeklyVehicleTypes}
+                onClose={handleWeeklyVehicleTypesClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={modalStyle}>
+                  <div className="w-full font-bold text-3xl text-[#05004E]">
+                    Vehicle Types 
+                  </div>
+                  <Bar options={weeklyVehicleTypesOptions} data={weeklyVehicleTypesData} />
+                </Box>
+              </Modal>
               <Bar options={weeklyVehicleTypesOptions} data={weeklyVehicleTypesData} />
             </div>
+
             <div className="w-full flex flex-col items-center justify-start bg-white rounded-lg p-8 gap-y-8 border border-black">
-              <div className="w-full font-bold text-2xl text-[#05004E]">
-                Parking Productivites
+              <div className="flex justify-between w-full">
+                <div className="font-bold text-2xl text-[#05004E]">
+                  Parking Productivites 
+                </div>
+                <Button onClick={handleWeeklyParkingProductivityOpen}>Expand</Button>
               </div>
+              <Modal
+                open={weeklyParkingProductivity}
+                onClose={handleWeeklyParkingProductivityClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={modalStyle}>
+                  <div className="w-full font-bold text-3xl text-[#05004E]">
+                    Parking Productivites 
+                  </div>
+                  <Bar options={weeklyParkingProductivityOptions} data={weeklyParkingProductivityData} />
+                </Box>
+              </Modal>
               <Bar options={weeklyParkingProductivityOptions} data={weeklyParkingProductivityData} />
             </div>
+
           </div>
         </div>
       )}

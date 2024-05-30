@@ -12,11 +12,20 @@ import {
   BarElement,
 } from "chart.js";
 import { faker } from "@faker-js/faker";
-
 import { Bar } from "react-chartjs-2";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
+
 
 const ParkingAnalytics = () => {
   const [loading, setLoading] = useState(true);
+  const [budgetCategoriesByWeek, setBudgetCategoriesByWeek] = useState(false);
+  const [ageCategoriesByWeek, setAgeCategoriesByWeek] = useState(false);
+  const handleBudgetCategoriesByWeekOpen = () => setBudgetCategoriesByWeek(true);
+  const handleBudgetCategoriesByWeekClose = () => setBudgetCategoriesByWeek(false);
+  const handleAgeCategoriesByWeek = () => setAgeCategoriesByWeek(true);
+  const handleAgeCategoriesByWeekClose = () => setAgeCategoriesByWeek(false);
 
   useEffect(() => {
     setLoading(false);
@@ -33,6 +42,18 @@ const ParkingAnalytics = () => {
     Filler,
     BarElement
   );
+
+  const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 900,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
   const daysOfWeek = [
     "Monday",
@@ -135,22 +156,57 @@ const ParkingAnalytics = () => {
         <div className="w-[95vw] h-full flex flex-col items-center justify-center font-poppins border border-gray rounded-lg p-8">
           <div className="flex flex-col items-center justify-center">
             <div className="font-bold text-2xl text-[#05004E]">
-              Owner Segmentation 
+              Owner Segmentation
             </div>
           </div>
           <div className="w-full flex flex-row items-stretch justify-start mt-8 gap-x-16">
+
             <div className="w-full flex flex-col items-center justify-start bg-white rounded-lg p-8 gap-y-8 border border-black">
-              <div className="w-full font-bold text-2xl text-[#05004E]">
-                Budget Categories By Week
+              <div className="flex justify-between w-full">
+                <div className="font-bold text-2xl text-[#05004E]">
+                  Budget Categories By Week
+                </div>
+                <Button onClick={handleBudgetCategoriesByWeekOpen}>Expand</Button>
               </div>
+              <Modal
+                open={budgetCategoriesByWeek}
+                onClose={handleBudgetCategoriesByWeekClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={modalStyle}>
+                  <div className="w-full font-bold text-3xl text-[#05004E]">
+                    Budget Categories By Week 
+                  </div>
+                  <Bar options={weeklyOccupancyOptions} data={weeklyOccupancyData} />
+                </Box>
+              </Modal>
               <Bar options={weeklyOccupancyOptions} data={weeklyOccupancyData} />
             </div>
+
             <div className="w-full flex flex-col items-center justify-start bg-white rounded-lg p-8 gap-y-8 border border-black">
-              <div className="w-full font-bold text-2xl text-[#05004E]">
-                Age Categories By Week
+              <div className="flex justify-between w-full">
+                <div className="font-bold text-2xl text-[#05004E]">
+                  Age Categories By Week 
+                </div>
+                <Button onClick={handleAgeCategoriesByWeek}>Expand</Button>
               </div>
+              <Modal
+                open={ageCategoriesByWeek}
+                onClose={handleAgeCategoriesByWeekClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={modalStyle}>
+                  <div className="w-full font-bold text-3xl text-[#05004E]">
+                    Age Categories By Week  
+                  </div>
+                  <Bar options={weeklyAgeOccupancyOptions} data={weeklyAgeOccupancyData} />
+                </Box>
+              </Modal>
               <Bar options={weeklyAgeOccupancyOptions} data={weeklyAgeOccupancyData} />
             </div>
+
           </div>
         </div>
       )}
