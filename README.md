@@ -1,3 +1,7 @@
+<p align="center">
+<img src="https://github.com/Parkomate-ParkVision/parkvision-frontend/assets/85283622/6f609ea7-b547-43cb-a771-2240ec86e914" width=400 />
+</p>
+
 # ParkVision Parking Analytics Dashboard (Frontend)
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
