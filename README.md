@@ -2,6 +2,8 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+![PARKVISION AHH DASHBOARD](https://github.com/Parkomate-ParkVision/parkvision-frontend/assets/67187699/32e8800a-84b5-4d4d-afaf-a3ec6d949afe)
+
 ## Table of Contents
 - [Introduction](#introduction)
 - [Features](#features)
